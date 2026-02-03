@@ -12,13 +12,16 @@ interface Props {
 export default function ProductCard({ product }: Props) {
     const { addToCart } = useCart();
 
-    const images = Array.isArray(product.images)
+    /* ================= IMAGE NORMALIZATION (SAFE) ================= */
+    const images: string[] = Array.isArray(product.images)
         ? product.images
         : product.images
             ? [product.images]
-            : [];
+            : product.image
+                ? [product.image]
+                : [];
 
-    const imageSrc = images[0] || "/placeholder.jpg";
+    const imageSrc = images[0] ?? "/placeholder.jpg";
 
     return (
         <div
@@ -34,13 +37,8 @@ export default function ProductCard({ product }: Props) {
                 hover:border-gray-300
             "
         >
-            {/* IMAGE (click safe) */}
-            <div
-                className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden"
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-            >
+            {/* ================= IMAGE ================= */}
+            <div className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden">
                 <img
                     src={imageSrc}
                     alt={product.name}
@@ -56,10 +54,12 @@ export default function ProductCard({ product }: Props) {
                 />
             </div>
 
-            {/* CONTENT */}
+            {/* ================= CONTENT ================= */}
             <div className="p-4 flex flex-col gap-2 text-gray-900 flex-1">
                 {/* ⭐ RATING */}
-                <Rating value={product.rating} />
+                {typeof product.rating === "number" && (
+                    <Rating value={product.rating} />
+                )}
 
                 {/* NAME */}
                 <h3 className="font-semibold text-sm sm:text-base leading-snug line-clamp-2">
@@ -78,7 +78,7 @@ export default function ProductCard({ product }: Props) {
                     </p>
                 )}
 
-                {/* DETAILS (only this navigates) */}
+                {/* DETAILS */}
                 <Link
                     href={`/product/${product.id}`}
                     className="
@@ -96,12 +96,10 @@ export default function ProductCard({ product }: Props) {
                     Full Details
                 </Link>
 
-                {/* ADD TO CART (navigation blocked) */}
+                {/* ADD TO CART */}
                 <button
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-
+                    type="button"
+                    onClick={() => {
                         addToCart({
                             id: product.id,
                             name: product.name,

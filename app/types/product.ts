@@ -5,6 +5,10 @@ interface BaseProduct {
     name: string;
     price: number;
 
+    /* 🔥 IMPORTANT: COMMON FIELDS */
+    category: string;
+    subCategory?: string;   // ✅ KEY FIX (OPTIONAL FOR ALL)
+
     description?: string;
 
     image?: string;
@@ -30,11 +34,17 @@ export interface MenProduct extends BaseProduct {
 
 export interface WomenProduct extends BaseProduct {
     category: "women";
-    subCategory: "jewellery" | "ethnic" | "tops" | "kurti" | "Footwear" | "Dress";
+    subCategory:
+        | "jewellery"
+        | "ethnic"
+        | "tops"
+        | "kurti"
+        | "Footwear"
+        | "Dress";
 
     jewelleryType?: "choker" | "necklace" | "earrings" | "bangles";
 
-    material?: string;     // ✅ ERROR FIXED
+    material?: string;
     stones?: string[];
 }
 
@@ -56,7 +66,7 @@ export interface ShoeProduct extends BaseProduct {
     material?: "Leather" | "Synthetic" | "Canvas" | "Rubber";
 }
 
-/* ================= FINAL ================= */
+/* ================= FINAL PRODUCT TYPE ================= */
 
 export type Product =
     | MenProduct

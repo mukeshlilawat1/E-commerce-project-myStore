@@ -7,7 +7,9 @@ import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
 
 export default function ProductDetailPage() {
-    const { id } = useParams();
+    const params = useParams<{ id: string }>(); // ✅ FIX
+    const id = params.id;
+
     const { addToCart } = useCart();
 
     const product = products.find(p => String(p.id) === id);
@@ -15,7 +17,6 @@ export default function ProductDetailPage() {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [activeImage, setActiveImage] = useState(0);
 
-    // ✅ CLIENT-ONLY STATES (NO HYDRATION ISSUE)
     const [relatedProducts, setRelatedProducts] = useState<typeof products>([]);
     const [customersAlsoBought, setCustomersAlsoBought] = useState<typeof products>([]);
 
@@ -36,10 +37,10 @@ export default function ProductDetailPage() {
                 ? [product.image]
                 : ["/placeholder.jpg"];
 
-    /* ================= SHUFFLE (CLIENT ONLY) ================= */
-    const shuffle = (arr: any[]) => [...arr].sort(() => Math.random() - 0.5);
+    /* ================= SHUFFLE ================= */
+    const shuffle = <T,>(arr: T[]) => [...arr].sort(() => Math.random() - 0.5);
 
-    /* ================= CLIENT SIDE RECOMMENDATIONS ================= */
+    /* ================= RECOMMENDATIONS ================= */
     useEffect(() => {
         setRelatedProducts(
             shuffle(
@@ -64,7 +65,6 @@ export default function ProductDetailPage() {
     return (
         <main className="min-h-screen bg-gray-50 text-gray-900 px-4 sm:px-6 py-12">
 
-            {/* ================= PRODUCT SECTION ================= */}
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
 
                 {/* IMAGE */}
@@ -82,18 +82,11 @@ export default function ProductDetailPage() {
                             <button
                                 key={idx}
                                 onClick={() => setActiveImage(idx)}
-                                className={`
-                                    h-20 w-16 rounded-xl overflow-hidden border transition
-                                    ${activeImage === idx
-                                        ? "border-black"
-                                        : "border-gray-300"}
+                                className={`h-20 w-16 rounded-xl overflow-hidden border transition
+                                    ${activeImage === idx ? "border-black" : "border-gray-300"}
                                 `}
                             >
-                                <img
-                                    src={img}
-                                    alt="thumb"
-                                    className="h-full w-full object-cover"
-                                />
+                                <img src={img} alt="thumb" className="h-full w-full object-cover" />
                             </button>
                         ))}
                     </div>
@@ -113,19 +106,15 @@ export default function ProductDetailPage() {
                         {product.description}
                     </p>
 
-                    {/* SIZE */}
                     {product.sizes && (
                         <div>
-                            <p className="mb-2 text-sm font-medium">
-                                Select Size
-                            </p>
+                            <p className="mb-2 text-sm font-medium">Select Size</p>
                             <div className="flex gap-3 flex-wrap">
                                 {product.sizes.map(size => (
                                     <button
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
-                                        className={`
-                                            px-4 py-2 rounded-full border transition
+                                        className={`px-4 py-2 rounded-full border transition
                                             ${selectedSize === size
                                                 ? "bg-black text-white border-black"
                                                 : "border-gray-300 hover:bg-gray-100"}
@@ -144,7 +133,6 @@ export default function ProductDetailPage() {
                         </div>
                     )}
 
-                    {/* ACTIONS */}
                     <div className="flex gap-4 flex-wrap mt-4">
                         <button
                             onClick={() => {
@@ -170,14 +158,13 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {/* ================= RELATED PRODUCTS ================= */}
             {relatedProducts.length > 0 && (
                 <section className="mt-28">
                     <h2 className="text-2xl sm:text-3xl font-bold mb-6">
                         Related Products
                     </h2>
 
-                    <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
+                    <div className="flex gap-6 overflow-x-auto pb-4">
                         {relatedProducts.map(item => (
                             <div key={item.id} className="min-w-[220px] sm:min-w-[260px]">
                                 <ProductCard product={item} />
@@ -187,14 +174,13 @@ export default function ProductDetailPage() {
                 </section>
             )}
 
-            {/* ================= CUSTOMERS ALSO BOUGHT ================= */}
             {customersAlsoBought.length > 0 && (
                 <section className="mt-28">
                     <h2 className="text-2xl sm:text-3xl font-bold mb-6">
                         Customers Also Bought
                     </h2>
 
-                    <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
+                    <div className="flex gap-6 overflow-x-auto pb-4">
                         {customersAlsoBought.map(item => (
                             <div key={item.id} className="min-w-[220px] sm:min-w-[260px]">
                                 <ProductCard product={item} />
@@ -203,7 +189,6 @@ export default function ProductDetailPage() {
                     </div>
                 </section>
             )}
-
         </main>
     );
 }
