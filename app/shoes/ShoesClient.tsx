@@ -22,24 +22,37 @@ export default function ShoesClient() {
     const [priceRange, setPriceRange] = useState(priceParam);
     const [sort, setSort] = useState(sortParam);
 
-    /* ================= PRODUCTS ================= */
+    /* ================= SHOES FILTER (OPTIMIZED) ================= */
 
     const filteredProducts = useMemo(() => {
         let data = products.filter(p => p.category === "shoes");
 
         if (activeType !== "All") {
+            const type = activeType.toLowerCase();
             data = data.filter(p =>
-                p.name.toLowerCase().includes(activeType.toLowerCase())
+                p.name.toLowerCase().includes(type)
             );
         }
 
         data = data.filter(p => p.price <= priceRange);
 
-        if (sort === "low") data = [...data].sort((a, b) => a.price - b.price);
-        if (sort === "high") data = [...data].sort((a, b) => b.price - a.price);
+        if (sort === "low") {
+            data = [...data].sort((a, b) => a.price - b.price);
+        }
+
+        if (sort === "high") {
+            data = [...data].sort((a, b) => b.price - a.price);
+        }
 
         return data;
     }, [activeType, priceRange, sort]);
+
+    /* ================= SANDALS (MEMOIZED) ================= */
+
+    const sandalsProducts = useMemo(
+        () => products.filter(p => p.category === "sandals"),
+        []
+    );
 
     /* ================= URL SYNC ================= */
 
@@ -61,7 +74,7 @@ export default function ShoesClient() {
                 className="min-h-[90vh] flex items-center bg-cover bg-center relative"
                 style={{ backgroundImage: "url('/heroShoes.jpg')" }}
             >
-                <div className="absolute inset-0 bg-black/45"></div>
+                <div className="absolute inset-0 bg-black/45" />
 
                 <div className="relative max-w-7xl mx-auto px-6 w-full">
                     <div className="ml-auto max-w-xl text-right">
@@ -94,7 +107,6 @@ export default function ShoesClient() {
             <section className="bg-white/90 backdrop-blur border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 py-6 space-y-5">
 
-                    {/* TYPE FILTER */}
                     <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
                         {SHOE_FILTERS.map(type => (
                             <button
@@ -104,8 +116,7 @@ export default function ShoesClient() {
                                     px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all
                                     ${activeType === type
                                         ? "bg-black text-white scale-[1.05]"
-                                        : "bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100"
-                                    }
+                                        : "bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100"}
                                 `}
                             >
                                 {type}
@@ -113,7 +124,6 @@ export default function ShoesClient() {
                         ))}
                     </div>
 
-                    {/* PRICE + SORT */}
                     <div className="flex flex-col sm:flex-row gap-5 sm:items-center sm:justify-between">
 
                         <div className="flex flex-col gap-2">
@@ -164,7 +174,6 @@ export default function ShoesClient() {
                                         ? [p.images]
                                         : [],
                             }}
-                            autoSlide
                         />
                     ))}
                 </div>
@@ -180,7 +189,7 @@ export default function ShoesClient() {
             <section className="py-20 px-6 bg-gradient-to-br from-yellow-50 via-orange-50 to-white">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-14">
-                        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900">
+                        <h2 className="text-4xl md:text-5xl font-extrabold">
                             Sandals Collection
                         </h2>
                         <p className="mt-4 text-gray-600">
@@ -189,22 +198,19 @@ export default function ShoesClient() {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        {products
-                            .filter(p => p.category === "sandals")
-                            .map(p => (
-                                <ProductCard
-                                    key={p.id}
-                                    product={{
-                                        ...p,
-                                        images: Array.isArray(p.images)
-                                            ? p.images
-                                            : p.images
-                                                ? [p.images]
-                                                : [],
-                                    }}
-                                    autoSlide
-                                />
-                            ))}
+                        {sandalsProducts.map(p => (
+                            <ProductCard
+                                key={p.id}
+                                product={{
+                                    ...p,
+                                    images: Array.isArray(p.images)
+                                        ? p.images
+                                        : p.images
+                                            ? [p.images]
+                                            : [],
+                                }}
+                            />
+                        ))}
                     </div>
                 </div>
             </section>

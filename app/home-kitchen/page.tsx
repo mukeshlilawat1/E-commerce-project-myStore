@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
+import Image from "next/image";
 
 const CATEGORY_MAP: Record<string, string[]> = {
     All: [],
@@ -18,29 +19,35 @@ const CATEGORY_MAP: Record<string, string[]> = {
 export default function HomeKitchenPage() {
     const [activeCategory, setActiveCategory] = useState("All");
 
-    const items = products.filter(p => {
-        if (p.category !== "home-kitchen") return false;
-        if (activeCategory === "All") return true;
+    /* ================= FAST FILTER ================= */
+    const items = useMemo(() => {
+        return products.filter(p => {
+            if (p.category !== "home-kitchen") return false;
+            if (activeCategory === "All") return true;
 
-        const keywords = CATEGORY_MAP[activeCategory];
-        return keywords.some(k =>
-            p.name.toLowerCase().includes(k)
-        );
-    });
+            const keywords = CATEGORY_MAP[activeCategory];
+            const name = p.name.toLowerCase();
+            return keywords.some(k => name.includes(k));
+        });
+    }, [activeCategory]);
 
     return (
         <main className="bg-gradient-to-b from-gray-50 via-white to-amber-50 text-gray-900 min-h-screen">
 
             {/* ================= HERO ================= */}
             <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center overflow-hidden">
-                <div
-                    className="absolute inset-0 bg-cover bg-center scale-105"
-                    style={{ backgroundImage: "url('/homeKitchen.jpg')" }}
+                <Image
+                    src="/homeKitchen.jpg"
+                    alt="Home & Kitchen"
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover scale-105"
                 />
                 <div className="absolute inset-0 bg-white/40 backdrop-blur-sm" />
 
                 <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-16 ml-auto text-right">
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gray-900">
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold">
                         Home & Kitchen
                     </h1>
 
@@ -48,7 +55,7 @@ export default function HomeKitchenPage() {
                         Essentials • Decor • Daily Comfort
                     </p>
 
-                    <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-end">
+                    <div className="mt-8 sm:mt-10 flex gap-4 sm:gap-6 justify-end flex-wrap">
                         <Link
                             href="/cart"
                             className="px-8 sm:px-10 py-4 rounded-full bg-black text-white font-semibold hover:scale-105 transition"
@@ -69,7 +76,6 @@ export default function HomeKitchenPage() {
             {/* ================= CATEGORY CARDS ================= */}
             <section className="py-14 sm:py-20 border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
                     <h2 className="text-2xl sm:text-3xl font-bold mb-12 text-center">
                         Shop by Category
                     </h2>
@@ -91,7 +97,6 @@ export default function HomeKitchenPage() {
             {/* ================= PRODUCTS GRID ================= */}
             <section className="py-16 sm:py-24 px-4 sm:px-6">
                 <div className="max-w-7xl mx-auto">
-
                     <h2 className="text-2xl sm:text-3xl font-bold mb-10">
                         {activeCategory === "All"
                             ? "Popular Home & Kitchen Products"
@@ -103,7 +108,7 @@ export default function HomeKitchenPage() {
                             No products found in this category
                         </p>
                     ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
                             {items.map(p => (
                                 <ProductCard key={p.id} product={p} />
                             ))}
@@ -120,14 +125,7 @@ export default function HomeKitchenPage() {
 
                 <Link
                     href="/cart"
-                    className="
-                        inline-block
-                        px-10 sm:px-12 py-4 sm:py-5
-                        rounded-full
-                        bg-gradient-to-r from-amber-500 to-orange-500
-                        text-white font-semibold
-                        shadow-xl hover:scale-105 transition
-                    "
+                    className="inline-block px-10 sm:px-12 py-4 sm:py-5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold shadow-xl hover:scale-105 transition"
                 >
                     Order on WhatsApp 💬
                 </Link>
@@ -152,17 +150,16 @@ function CategoryCard({
     return (
         <button
             onClick={onClick}
-            className={`
-                group relative h-[120px] sm:h-[140px]
-                rounded-xl overflow-hidden
-                border transition
+            className={`group relative h-[120px] sm:h-[140px] rounded-xl overflow-hidden border transition
                 ${active ? "border-black" : "border-gray-200"}
             `}
         >
-            <img
+            <Image
                 src={image}
                 alt={title}
-                className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition"
+                fill
+                sizes="(max-width:768px) 50vw, 16vw"
+                className="object-cover transition-transform group-hover:scale-105"
             />
 
             <div className="absolute inset-0 bg-white/55 group-hover:bg-white/30 transition" />

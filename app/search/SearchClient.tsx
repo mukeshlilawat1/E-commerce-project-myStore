@@ -3,13 +3,12 @@
 import { useSearchParams } from "next/navigation";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const categories = ["all", "men", "women", "shoes", "watches"];
 
 export default function SearchClient() {
     const searchParams = useSearchParams();
-
     const initialQuery = searchParams.get("q") || "";
 
     const [query, setQuery] = useState(initialQuery);
@@ -25,23 +24,28 @@ export default function SearchClient() {
         return () => clearTimeout(timer);
     }, [query]);
 
-    /* ================= UPDATE QUERY FROM URL ================= */
+    /* ================= URL → STATE SYNC ================= */
     useEffect(() => {
         setQuery(initialQuery);
         setDebouncedQuery(initialQuery);
     }, [initialQuery]);
 
-    /* ================= FILTER ================= */
-    const filteredProducts = products.filter(p => {
-        const matchName = p.name
-            .toLowerCase()
-            .includes(debouncedQuery.toLowerCase());
+    /* ================= FILTER (OPTIMIZED) ================= */
+    const filteredProducts = useMemo(() => {
+        const q = debouncedQuery.trim().toLowerCase();
+        if (!q && category === "all") return products;
 
-        const matchCategory =
-            category === "all" || p.category === category;
+        return products.filter(p => {
+            const matchName = q
+                ? p.name.toLowerCase().includes(q)
+                : true;
 
-        return matchName && matchCategory;
-    });
+            const matchCategory =
+                category === "all" || p.category === category;
+
+            return matchName && matchCategory;
+        });
+    }, [debouncedQuery, category]);
 
     return (
         <main className="min-h-screen bg-[#f6f7f9] px-6 py-16 text-gray-900">
@@ -54,11 +58,10 @@ export default function SearchClient() {
                             key={c}
                             onClick={() => setCategory(c)}
                             className={`
-                              px-4 py-2 rounded-full text-sm font-medium transition
-                              ${category === c
+                                px-4 py-2 rounded-full text-sm font-medium transition
+                                ${category === c
                                     ? "bg-black text-white"
-                                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
-                                }
+                                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"}
                             `}
                         >
                             {c.toUpperCase()}
@@ -81,9 +84,9 @@ export default function SearchClient() {
                     </p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                        {filteredProducts.map((product, index) => (
+                        {filteredProducts.map(product => (
                             <ProductCard
-                                key={`${product.id}-${index}`}
+                                key={product.id}
                                 product={product}
                             />
                         ))}

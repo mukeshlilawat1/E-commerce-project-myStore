@@ -4,6 +4,7 @@ import { Product } from "@/types/product";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import Rating from "@/components/Rating";
+import Image from "next/image";
 
 interface Props {
     product: Product;
@@ -21,7 +22,7 @@ export default function ProductCard({ product }: Props) {
                 ? [product.image]
                 : [];
 
-    const imageSrc = images[0] ?? "/placeholder.jpg";
+    const imageSrc = images[0] || "/placeholder.jpg";
 
     return (
         <div
@@ -39,46 +40,44 @@ export default function ProductCard({ product }: Props) {
         >
             {/* ================= IMAGE ================= */}
             <div className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden">
-                <img
+                <Image
                     src={imageSrc}
                     alt={product.name}
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 640px) 50vw,
+                           (max-width: 1024px) 33vw,
+                           25vw"
                     className="
-                        absolute inset-0
-                        w-full h-full
                         object-cover
                         object-center
                         transition-transform duration-300
                         group-hover:scale-105
                     "
+                    loading="lazy"
+                    priority={false}   // ✅ explicit for clarity
                 />
             </div>
 
             {/* ================= CONTENT ================= */}
             <div className="p-4 flex flex-col gap-2 text-gray-900 flex-1">
-                {/* ⭐ RATING */}
                 {typeof product.rating === "number" && (
                     <Rating value={product.rating} />
                 )}
 
-                {/* NAME */}
                 <h3 className="font-semibold text-sm sm:text-base leading-snug line-clamp-2">
                     {product.name}
                 </h3>
 
-                {/* PRICE */}
                 <p className="text-gray-700 text-sm font-medium">
                     ₹{product.price}
                 </p>
 
-                {/* DESCRIPTION */}
                 {product.description && (
                     <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
                         {product.description}
                     </p>
                 )}
 
-                {/* DETAILS */}
                 <Link
                     href={`/product/${product.id}`}
                     className="
@@ -96,7 +95,6 @@ export default function ProductCard({ product }: Props) {
                     Full Details
                 </Link>
 
-                {/* ADD TO CART */}
                 <button
                     type="button"
                     onClick={() => {

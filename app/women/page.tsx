@@ -3,29 +3,45 @@
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+
+/* ================= FILTER MAP ================= */
+
+const WOMEN_FILTERS: Record<string, (p: any) => boolean> = {
+    All: (p) => p.category === "women" || p.category === "women-jewellery",
+
+    Kurti: (p) =>
+        p.category === "women" &&
+        p.subCategory?.toLowerCase() === "kurti",
+
+    Dress: (p) =>
+        p.category === "women" &&
+        p.subCategory?.toLowerCase() === "dress",
+
+    Top: (p) =>
+        p.category === "women" &&
+        p.subCategory?.toLowerCase() === "tops",
+
+    Ethnic: (p) =>
+        p.category === "women" &&
+        p.subCategory?.toLowerCase() === "ethnic",
+
+    Footwear: (p) =>
+        p.category === "women" &&
+        p.subCategory?.toLowerCase() === "footwear",
+
+    Jewellery: (p) => p.category === "women-jewellery",
+};
 
 export default function WomenPage() {
     const [activeFilter, setActiveFilter] = useState("All");
 
-    /* ================= FILTER LOGIC (UNCHANGED) ================= */
-    const womenProducts = products.filter(p => {
-        // All → women + jewellery
-        if (activeFilter === "All") {
-            return p.category === "women" || p.category === "women-jewellery";
-        }
+    /* ================= FILTERED PRODUCTS (FIXED + FAST) ================= */
 
-        // Jewellery only
-        if (activeFilter === "Jewellery") {
-            return p.category === "women-jewellery";
-        }
-
-        // Other filters
-        return (
-            p.category === "women" &&
-            p.name.toLowerCase().includes(activeFilter.toLowerCase())
-        );
-    });
+    const womenProducts = useMemo(() => {
+        const filterFn = WOMEN_FILTERS[activeFilter];
+        return products.filter(filterFn);
+    }, [activeFilter]);
 
     return (
         <main className="relative bg-[#f6f7f9] text-gray-900">
@@ -68,7 +84,7 @@ export default function WomenPage() {
             {/* ================= FILTER BAR ================= */}
             <section className="relative z-10 bg-white/80 backdrop-blur border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex gap-3 overflow-x-auto scrollbar-hide">
-                    {["All", "Kurti", "Dress", "Top", "Ethnic", "Footwear", "Jewellery"].map(label => (
+                    {Object.keys(WOMEN_FILTERS).map(label => (
                         <FilterBadge
                             key={label}
                             label={label}
@@ -82,11 +98,17 @@ export default function WomenPage() {
             {/* ================= PRODUCTS GRID ================= */}
             <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#f3f4f6]">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
-                        {womenProducts.map(p => (
-                            <ProductCard key={p.id} product={p} />
-                        ))}
-                    </div>
+                    {womenProducts.length === 0 ? (
+                        <p className="text-center text-gray-500">
+                            No products found
+                        </p>
+                    ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+                            {womenProducts.map(p => (
+                                <ProductCard key={p.id} product={p} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -112,6 +134,7 @@ export default function WomenPage() {
 }
 
 /* ================= FILTER BADGE ================= */
+
 function FilterBadge({
     label,
     active,
@@ -122,15 +145,15 @@ function FilterBadge({
     onClick: (value: string) => void;
 }) {
     return (
-        <span
+        <button
             onClick={() => onClick(label)}
-            className={`px-5 py-2 rounded-full text-sm font-medium cursor-pointer whitespace-nowrap transition
+            className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition
             ${active
                     ? "bg-black text-white"
                     : "bg-white text-pink-700 border border-pink-200 hover:bg-pink-50"
                 }`}
         >
             {label}
-        </span>
+        </button>
     );
 }

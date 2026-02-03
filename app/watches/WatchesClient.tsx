@@ -7,6 +7,7 @@ import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 
 /* ================= FILTER CONFIG ================= */
+
 const WATCH_FILTERS: Record<string, string> = {
     All: "all",
     Luxury: "luxury",
@@ -20,14 +21,17 @@ export default function WatchesClient() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const typeParam = searchParams.get("type") || "All";
-    const sortParam = searchParams.get("sort") || "none";
-    const priceParam = Number(searchParams.get("price")) || 20000;
+    const [activeType, setActiveType] = useState(
+        searchParams.get("type") || "All"
+    );
+    const [priceRange, setPriceRange] = useState(
+        Number(searchParams.get("price")) || 20000
+    );
+    const [sort, setSort] = useState(
+        searchParams.get("sort") || "none"
+    );
 
-    const [activeType, setActiveType] = useState(typeParam);
-    const [priceRange, setPriceRange] = useState(priceParam);
-    const [sort, setSort] = useState(sortParam);
-    const [loading, setLoading] = useState(false);
+    /* ================= FILTERED PRODUCTS (FAST) ================= */
 
     const filteredProducts = useMemo(() => {
         let data = products.filter(p => p.category === "watches");
@@ -39,23 +43,26 @@ export default function WatchesClient() {
 
         data = data.filter(p => p.price <= priceRange);
 
-        if (sort === "low") data = [...data].sort((a, b) => a.price - b.price);
-        if (sort === "high") data = [...data].sort((a, b) => b.price - a.price);
+        if (sort === "low") {
+            data = [...data].sort((a, b) => a.price - b.price);
+        }
+        if (sort === "high") {
+            data = [...data].sort((a, b) => b.price - a.price);
+        }
 
         return data;
     }, [activeType, priceRange, sort]);
 
-    useEffect(() => {
-        setLoading(true);
-        const t = setTimeout(() => setLoading(false), 300);
+    /* ================= URL SYNC (NO DELAY) ================= */
 
+    useEffect(() => {
         const params = new URLSearchParams();
+
         if (activeType !== "All") params.set("type", activeType);
         if (priceRange !== 20000) params.set("price", String(priceRange));
         if (sort !== "none") params.set("sort", sort);
 
         router.replace(`?${params.toString()}`, { scroll: false });
-        return () => clearTimeout(t);
     }, [activeType, priceRange, sort, router]);
 
     return (
@@ -138,20 +145,13 @@ export default function WatchesClient() {
 
             {/* ================= PRODUCTS GRID ================= */}
             <section className="py-20 px-6 bg-[#f3f4f6]">
-                <div
-                    className={`max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 transition-opacity duration-300 ${loading ? "opacity-40" : "opacity-100"
-                        }`}
-                >
-                    {loading
-                        ? Array.from({ length: 8 }).map((_, i) => (
-                            <Skeleton key={i} />
-                        ))
-                        : filteredProducts.map(p => (
-                            <ProductCard key={p.id} product={p} />
-                        ))}
+                <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    {filteredProducts.map(p => (
+                        <ProductCard key={p.id} product={p} />
+                    ))}
                 </div>
 
-                {!loading && filteredProducts.length === 0 && (
+                {filteredProducts.length === 0 && (
                     <p className="text-center text-gray-500 mt-16">
                         No watches found
                     </p>
@@ -171,29 +171,27 @@ export default function WatchesClient() {
     );
 }
 
-/* ================= COMPONENTS ================= */
+/* ================= FILTER BADGE ================= */
 
-function FilterBadge({ label, active, onClick }: any) {
+function FilterBadge({
+    label,
+    active,
+    onClick,
+}: {
+    label: string;
+    active: boolean;
+    onClick: () => void;
+}) {
     return (
         <button
             onClick={onClick}
             className={`px-5 py-2 rounded-full text-sm font-medium transition
             ${active
-                    ? "bg-black text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+                ? "bg-black text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"}
+            `}
         >
             {label}
         </button>
-    );
-}
-
-function Skeleton() {
-    return (
-        <div className="rounded-xl border border-gray-200 bg-white p-4 animate-pulse">
-            <div className="h-40 bg-gray-200 rounded-lg mb-4" />
-            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-1/2" />
-        </div>
     );
 }

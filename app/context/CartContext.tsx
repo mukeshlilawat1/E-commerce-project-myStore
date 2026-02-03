@@ -5,6 +5,8 @@ import {
     useContext,
     useReducer,
     ReactNode,
+    useMemo,
+    useCallback,
 } from "react";
 import { CartItem } from "@/types/cart";
 
@@ -31,14 +33,20 @@ interface CartContextType {
 const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
     switch (action.type) {
         case "ADD_ITEM": {
-            const existing = state.find(i => i.id === action.payload.id);
+            const existing = state.find(
+                i =>
+                    i.id === action.payload.id &&
+                    i.size === action.payload.size
+            );
+
             if (existing) {
                 return state.map(i =>
-                    i.id === action.payload.id
+                    i.id === action.payload.id && i.size === action.payload.size
                         ? { ...i, qty: i.qty + 1 }
                         : i
                 );
             }
+
             return [...state, { ...action.payload, qty: 1 }];
         }
 
@@ -67,39 +75,60 @@ const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
 
 /* ================= CONTEXT ================= */
 
-const CartContext = createContext<CartContextType | null>(null);
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
 /* ================= PROVIDER ================= */
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [cart, dispatch] = useReducer(cartReducer, []);
 
-    const addToCart = (item: CartItem) =>
-        dispatch({ type: "ADD_ITEM", payload: item });
+    /* ========= MEMOIZED ACTIONS ========= */
 
-    const increaseQty = (id: number) =>
-        dispatch({ type: "INCREASE_QTY", payload: id });
+    const addToCart = useCallback(
+        (item: CartItem) =>
+            dispatch({ type: "ADD_ITEM", payload: item }),
+        []
+    );
 
-    const decreaseQty = (id: number) =>
-        dispatch({ type: "DECREASE_QTY", payload: id });
+    const increaseQty = useCallback(
+        (id: number) =>
+            dispatch({ type: "INCREASE_QTY", payload: id }),
+        []
+    );
 
-    const removeFromCart = (id: number) =>
-        dispatch({ type: "REMOVE_ITEM", payload: id });
+    const decreaseQty = useCallback(
+        (id: number) =>
+            dispatch({ type: "DECREASE_QTY", payload: id }),
+        []
+    );
 
-    const clearCart = () =>
-        dispatch({ type: "CLEAR_CART" });
+    const removeFromCart = useCallback(
+        (id: number) =>
+            dispatch({ type: "REMOVE_ITEM", payload: id }),
+        []
+    );
+
+    const clearCart = useCallback(
+        () => dispatch({ type: "CLEAR_CART" }),
+        []
+    );
+
+    /* ========= MEMOIZED CONTEXT VALUE ========= */
+
+    const value = useMemo(
+        () => ({
+            cart,
+            addToCart,
+            increaseQty,
+            decreaseQty,
+            removeFromCart,
+            clearCart,
+        }),
+        [cart, addToCart, increaseQty, decreaseQty, removeFromCart, clearCart]
+    );
 
     return (
-        <CartContext.Provider
-            value={{
-                cart,
-                addToCart,
-                increaseQty,
-                decreaseQty,
-                removeFromCart,
-                clearCart,
-            }}
-        >
+        <CartContext.Provider value={value}>
             {children}
         </CartContext.Provider>
     );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
@@ -16,11 +16,14 @@ type KidsFilter =
 export default function KidsPage() {
     const [filter, setFilter] = useState<KidsFilter>("all");
 
-    const kidsProducts = products.filter(p => {
-        if (p.category !== "kids") return false;
-        if (filter === "all") return true;
-        return p.subCategory === filter;
-    });
+    /* ================= FAST FILTERED PRODUCTS ================= */
+    const kidsProducts = useMemo(() => {
+        return products.filter(p => {
+            if (p.category !== "kids") return false;
+            if (filter === "all") return true;
+            return p.subCategory === filter;
+        });
+    }, [filter]);
 
     return (
         <main className="bg-gradient-to-b from-sky-50 via-white to-pink-50 text-gray-900">
@@ -34,7 +37,7 @@ export default function KidsPage() {
                 <div className="absolute inset-0 bg-white/40 backdrop-blur-sm" />
 
                 <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-16 ml-auto text-right">
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight text-gray-900">
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold">
                         Kids Clothing
                     </h1>
 
@@ -45,14 +48,14 @@ export default function KidsPage() {
                     <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-end">
                         <Link
                             href="/cart"
-                            className="px-8 sm:px-10 py-4 rounded-full bg-black text-white font-semibold text-center hover:scale-105 transition"
+                            className="px-8 sm:px-10 py-4 rounded-full bg-black text-white font-semibold hover:scale-105 transition"
                         >
                             View Cart
                         </Link>
 
                         <Link
                             href="/"
-                            className="px-8 sm:px-10 py-4 rounded-full border border-black font-semibold text-center hover:bg-black hover:text-white transition"
+                            className="px-8 sm:px-10 py-4 rounded-full border border-black font-semibold hover:bg-black hover:text-white transition"
                         >
                             Back to Home
                         </Link>
@@ -80,7 +83,7 @@ export default function KidsPage() {
                             No products found in this category
                         </p>
                     ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
                             {kidsProducts.map(p => (
                                 <ProductCard key={p.id} product={p} />
                             ))}
@@ -91,26 +94,17 @@ export default function KidsPage() {
 
             {/* ================= CTA ================= */}
             <section className="pb-16 sm:pb-24 text-center px-4">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
                     Cute Styles for Little Stars ✨
                 </h2>
 
-                <p className="text-gray-600 mb-8 sm:mb-10">
+                <p className="text-gray-600 mb-8">
                     Add items to cart and order instantly via WhatsApp
                 </p>
 
                 <Link
                     href="/cart"
-                    className="
-                        inline-block
-                        px-10 sm:px-12 py-4 sm:py-5
-                        rounded-full
-                        text-lg sm:text-xl
-                        font-semibold
-                        bg-gradient-to-r from-pink-500 to-purple-500
-                        text-white
-                        shadow-xl hover:scale-105 transition
-                    "
+                    className="inline-block px-10 sm:px-12 py-4 sm:py-5 rounded-full text-lg font-semibold bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-xl hover:scale-105 transition"
                 >
                     Order on WhatsApp 💬
                 </Link>

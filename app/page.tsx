@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useMemo } from "react";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+import Image from "next/image";
 
 export default function HomePage() {
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  /* ================= FEATURED PRODUCTS (MIXED) ================= */
+  /* ================= FEATURED PRODUCTS ================= */
   const featuredProducts = useMemo(() => {
     const categories = Array.from(new Set(products.map(p => p.category)));
 
@@ -30,29 +31,19 @@ export default function HomePage() {
     let isUserInteracting = false;
     let isVisible = true;
 
-    const isMobile = window.innerWidth < 768;
-    const speed = isMobile ? 0.25 : 0.35;
+    const speed = window.innerWidth < 768 ? 0.25 : 0.35;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
+      ([entry]) => (isVisible = entry.isIntersecting),
       { threshold: 0.2 }
     );
 
     observer.observe(el);
 
-    const onVisibilityChange = () => {
-      isVisible = !document.hidden;
-    };
-
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
     const animate = () => {
       if (!isUserInteracting && isVisible) {
         scroll += speed;
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        if (scroll >= maxScroll) scroll = 0;
+        if (scroll >= el.scrollWidth - el.clientWidth) scroll = 0;
         el.scrollLeft = scroll;
       }
       rafId = requestAnimationFrame(animate);
@@ -64,21 +55,16 @@ export default function HomePage() {
       isUserInteracting = false;
     };
 
-    el.addEventListener("touchstart", stop, { passive: true });
-    el.addEventListener("touchend", start);
     el.addEventListener("mouseenter", stop);
     el.addEventListener("mouseleave", start);
+    el.addEventListener("touchstart", stop, { passive: true });
+    el.addEventListener("touchend", start);
 
     rafId = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(rafId);
       observer.disconnect();
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      el.removeEventListener("touchstart", stop);
-      el.removeEventListener("touchend", start);
-      el.removeEventListener("mouseenter", stop);
-      el.removeEventListener("mouseleave", start);
     };
   }, []);
 
@@ -87,9 +73,13 @@ export default function HomePage() {
 
       {/* ================= HERO ================= */}
       <section className="relative min-h-[60vh] md:min-h-[80vh] flex items-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center scale-105"
-          style={{ backgroundImage: "url('/home.jpg')" }}
+        <Image
+          src="/home.jpg"
+          alt="Hero"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover scale-105"
         />
         <div className="absolute inset-0 bg-black/55" />
 
@@ -129,7 +119,7 @@ export default function HomePage() {
       {/* ================= CATEGORIES ================= */}
       <section className="-mt-20 pt-28 pb-24 relative z-20">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold mb-12 text-center md:text-left">
+          <h2 className="text-2xl md:text-3xl font-bold mb-12">
             Shop by Category
           </h2>
 
@@ -144,7 +134,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ================= FEATURED PRODUCTS ================= */}
+      {/* ================= FEATURED ================= */}
       <section className="py-24 bg-white">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -153,18 +143,15 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="max-w-7xl mx-auto px-6"
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-10 text-center md:text-left">
+          <h2 className="text-2xl md:text-3xl font-bold mb-10">
             Featured Products
           </h2>
 
           <div
             ref={sliderRef}
-            className="
-              flex gap-6 overflow-x-auto scrollbar-hide pb-6
-              cursor-grab active:cursor-grabbing
-            "
+            className="flex gap-6 overflow-x-auto pb-6 cursor-grab"
           >
-            {featuredProducts.map((p) => (
+            {featuredProducts.map(p => (
               <motion.div
                 key={p.id}
                 whileHover={{ scale: 1.04 }}
@@ -196,25 +183,20 @@ function CategoryCard({
   return (
     <Link
       href={link}
-      className="
-        relative group h-[190px] sm:h-[210px] md:h-[230px]
-        rounded-2xl overflow-hidden
-        bg-white shadow-md hover:shadow-xl transition
-      "
+      className="relative group h-[190px] sm:h-[210px] md:h-[230px] rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition"
     >
-      <img
+      <Image
         src={image}
         alt={title}
-        className="
-          absolute inset-0 h-full w-full object-cover
-          transition-transform duration-500 group-hover:scale-110
-        "
+        fill
+        sizes="(max-width: 768px) 50vw, 25vw"
+        className="object-cover transition-transform duration-500 group-hover:scale-110"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
 
       <div className="absolute bottom-0 w-full p-5">
-        <h3 className="text-base md:text-lg font-semibold text-white text-center tracking-wide">
+        <h3 className="text-base md:text-lg font-semibold text-white text-center">
           {title}
         </h3>
       </div>

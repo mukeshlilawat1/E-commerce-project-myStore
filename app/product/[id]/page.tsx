@@ -5,9 +5,10 @@ import { useParams } from "next/navigation";
 import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
+import Image from "next/image";
 
 export default function ProductDetailPage() {
-    const params = useParams<{ id: string }>(); // ✅ FIX
+    const params = useParams<{ id: string }>();
     const id = params.id;
 
     const { addToCart } = useCart();
@@ -29,7 +30,7 @@ export default function ProductDetailPage() {
     }
 
     /* ================= IMAGE NORMALIZE ================= */
-    const images = Array.isArray(product.images)
+    const images: string[] = Array.isArray(product.images)
         ? product.images
         : product.images
             ? [product.images]
@@ -67,32 +68,45 @@ export default function ProductDetailPage() {
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
 
-                {/* IMAGE */}
+                {/* ================= IMAGE ================= */}
                 <div className="flex flex-col gap-4">
-                    <div className="w-full max-h-[600px] rounded-2xl bg-white border border-gray-200 flex items-center justify-center overflow-hidden shadow-sm">
-                        <img
+                    <div className="relative w-full max-h-[600px] aspect-[3/4] rounded-2xl bg-white border border-gray-200 overflow-hidden shadow-sm">
+                        <Image
                             src={images[activeImage]}
                             alt={product.name}
-                            className="max-h-full max-w-full object-contain"
+                            fill
+                            priority
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-contain"
                         />
                     </div>
 
+                    {/* THUMBNAILS */}
                     <div className="flex gap-3 overflow-x-auto">
                         {images.map((img, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setActiveImage(idx)}
-                                className={`h-20 w-16 rounded-xl overflow-hidden border transition
-                                    ${activeImage === idx ? "border-black" : "border-gray-300"}
+                                className={`
+                                    relative h-20 w-16 rounded-xl overflow-hidden border
+                                    ${activeImage === idx
+                                        ? "border-black"
+                                        : "border-gray-300"}
                                 `}
                             >
-                                <img src={img} alt="thumb" className="h-full w-full object-cover" />
+                                <Image
+                                    src={img}
+                                    alt="thumb"
+                                    fill
+                                    sizes="64px"
+                                    className="object-cover"
+                                />
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* DETAILS */}
+                {/* ================= DETAILS ================= */}
                 <div className="flex flex-col gap-6">
                     <h1 className="text-3xl sm:text-4xl font-bold">
                         {product.name}
@@ -114,7 +128,8 @@ export default function ProductDetailPage() {
                                     <button
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
-                                        className={`px-4 py-2 rounded-full border transition
+                                        className={`
+                                            px-4 py-2 rounded-full border transition
                                             ${selectedSize === size
                                                 ? "bg-black text-white border-black"
                                                 : "border-gray-300 hover:bg-gray-100"}
@@ -124,12 +139,6 @@ export default function ProductDetailPage() {
                                     </button>
                                 ))}
                             </div>
-
-                            {!selectedSize && (
-                                <p className="text-red-500 text-xs mt-2">
-                                    Please select a size
-                                </p>
-                            )}
                         </div>
                     )}
 
@@ -158,6 +167,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
+            {/* ================= RELATED ================= */}
             {relatedProducts.length > 0 && (
                 <section className="mt-28">
                     <h2 className="text-2xl sm:text-3xl font-bold mb-6">
