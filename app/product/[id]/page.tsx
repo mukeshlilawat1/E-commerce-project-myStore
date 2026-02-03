@@ -21,7 +21,7 @@ export default function ProductDetailPage() {
 
     if (!product) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-white">
+            <div className="min-h-screen flex items-center justify-center text-gray-600 bg-gray-50">
                 Product not found
             </div>
         );
@@ -62,14 +62,14 @@ export default function ProductDetailPage() {
     }, [product]);
 
     return (
-        <main className="min-h-screen bg-black text-white px-4 sm:px-6 py-10">
+        <main className="min-h-screen bg-gray-50 text-gray-900 px-4 sm:px-6 py-12">
 
             {/* ================= PRODUCT SECTION ================= */}
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
 
                 {/* IMAGE */}
                 <div className="flex flex-col gap-4">
-                    <div className="w-full max-h-[600px] rounded-2xl bg-black flex items-center justify-center overflow-hidden">
+                    <div className="w-full max-h-[600px] rounded-2xl bg-white border border-gray-200 flex items-center justify-center overflow-hidden shadow-sm">
                         <img
                             src={images[activeImage]}
                             alt={product.name}
@@ -77,15 +77,16 @@ export default function ProductDetailPage() {
                         />
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 overflow-x-auto">
                         {images.map((img, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setActiveImage(idx)}
-                                className={`h-20 w-16 rounded-xl overflow-hidden border
+                                className={`
+                                    h-20 w-16 rounded-xl overflow-hidden border transition
                                     ${activeImage === idx
-                                        ? "border-white"
-                                        : "border-white/20"}
+                                        ? "border-black"
+                                        : "border-gray-300"}
                                 `}
                             >
                                 <img
@@ -104,27 +105,30 @@ export default function ProductDetailPage() {
                         {product.name}
                     </h1>
 
-                    <p className="text-green-400 text-2xl font-semibold">
+                    <p className="text-green-600 text-2xl font-semibold">
                         ₹{product.price}
                     </p>
 
-                    <p className="text-gray-400 max-w-xl">
+                    <p className="text-gray-600 max-w-xl leading-relaxed">
                         {product.description}
                     </p>
 
                     {/* SIZE */}
                     {product.sizes && (
                         <div>
-                            <p className="mb-2 text-sm">Select Size</p>
-                            <div className="flex gap-3">
+                            <p className="mb-2 text-sm font-medium">
+                                Select Size
+                            </p>
+                            <div className="flex gap-3 flex-wrap">
                                 {product.sizes.map(size => (
                                     <button
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
-                                        className={`px-4 py-2 rounded-full border
+                                        className={`
+                                            px-4 py-2 rounded-full border transition
                                             ${selectedSize === size
-                                                ? "bg-white text-black"
-                                                : "border-white/30"}
+                                                ? "bg-black text-white border-black"
+                                                : "border-gray-300 hover:bg-gray-100"}
                                         `}
                                     >
                                         {size}
@@ -154,12 +158,12 @@ export default function ProductDetailPage() {
                                     images,
                                 });
                             }}
-                            className="px-8 py-3 rounded-full bg-white text-black font-semibold"
+                            className="px-8 py-3 rounded-full bg-black text-white font-semibold hover:scale-105 transition"
                         >
                             Add to Cart
                         </button>
 
-                        <button className="px-8 py-3 rounded-full border border-white/30">
+                        <button className="px-8 py-3 rounded-full border border-gray-400 hover:bg-gray-100 transition">
                             Order on WhatsApp
                         </button>
                     </div>
@@ -168,7 +172,7 @@ export default function ProductDetailPage() {
 
             {/* ================= RELATED PRODUCTS ================= */}
             {relatedProducts.length > 0 && (
-                <section className="mt-24">
+                <section className="mt-28">
                     <h2 className="text-2xl sm:text-3xl font-bold mb-6">
                         Related Products
                     </h2>
@@ -185,7 +189,7 @@ export default function ProductDetailPage() {
 
             {/* ================= CUSTOMERS ALSO BOUGHT ================= */}
             {customersAlsoBought.length > 0 && (
-                <section className="mt-24">
+                <section className="mt-28">
                     <h2 className="text-2xl sm:text-3xl font-bold mb-6">
                         Customers Also Bought
                     </h2>

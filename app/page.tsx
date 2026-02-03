@@ -20,7 +20,7 @@ export default function HomePage() {
     return mixed.slice(0, 20);
   }, []);
 
-  /* ================= AUTO SCROLL (PERFORMANCE OPTIMIZED) ================= */
+  /* ================= AUTO SCROLL ================= */
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
@@ -83,7 +83,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="bg-white text-black dark:bg-black dark:text-white">
+    <main className="bg-gray-50 text-gray-900">
 
       {/* ================= HERO ================= */}
       <section className="relative min-h-[60vh] md:min-h-[80vh] flex items-center overflow-hidden">
@@ -91,7 +91,7 @@ export default function HomePage() {
           className="absolute inset-0 bg-cover bg-center scale-105"
           style={{ backgroundImage: "url('/home.jpg')" }}
         />
-        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0 bg-black/55" />
 
         <div className="relative z-10 w-full max-w-5xl px-6 md:px-16 ml-auto text-right">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-white">
@@ -144,8 +144,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ================= FEATURED PRODUCTS (MIXED) ================= */}
-      <section className="py-24">
+      {/* ================= FEATURED PRODUCTS ================= */}
+      <section className="py-24 bg-white">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -159,7 +159,10 @@ export default function HomePage() {
 
           <div
             ref={sliderRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide pb-6 cursor-grab active:cursor-grabbing will-change-transform"
+            className="
+              flex gap-6 overflow-x-auto scrollbar-hide pb-6
+              cursor-grab active:cursor-grabbing
+            "
           >
             {featuredProducts.map((p) => (
               <motion.div
@@ -193,15 +196,22 @@ function CategoryCard({
   return (
     <Link
       href={link}
-      className="relative group h-[190px] sm:h-[210px] md:h-[230px] rounded-2xl overflow-hidden bg-black shadow-lg hover:shadow-2xl transition"
+      className="
+        relative group h-[190px] sm:h-[210px] md:h-[230px]
+        rounded-2xl overflow-hidden
+        bg-white shadow-md hover:shadow-xl transition
+      "
     >
       <img
         src={image}
         alt={title}
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        className="
+          absolute inset-0 h-full w-full object-cover
+          transition-transform duration-500 group-hover:scale-110
+        "
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
 
       <div className="absolute bottom-0 w-full p-5">
         <h3 className="text-base md:text-lg font-semibold text-white text-center tracking-wide">

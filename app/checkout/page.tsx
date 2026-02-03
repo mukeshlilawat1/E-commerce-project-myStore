@@ -49,16 +49,16 @@ Please save the tracking ID for future reference.
     };
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-4 py-20">
+        <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900 px-4 py-20">
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
 
                 {/* ================= LEFT : FORM ================= */}
-                <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 lg:p-10 shadow-2xl">
+                <div className="bg-white border border-gray-200 rounded-3xl p-8 lg:p-10 shadow-xl">
 
                     <h1 className="text-3xl font-extrabold mb-2">
                         Checkout
                     </h1>
-                    <p className="text-gray-400 mb-8">
+                    <p className="text-gray-600 mb-8">
                         Enter your details & place order instantly
                     </p>
 
@@ -70,7 +70,7 @@ Please save the tracking ID for future reference.
 
                         {/* ADDRESS */}
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm text-gray-400">
+                            <label className="text-sm text-gray-600">
                                 Complete Delivery Address
                             </label>
                             <textarea
@@ -80,9 +80,9 @@ Please save the tracking ID for future reference.
                                 placeholder="House no, street, area, city, pincode"
                                 className="
                                     px-4 py-3 rounded-2xl
-                                    bg-black/50
-                                    border border-white/20
-                                    focus:border-green-400
+                                    bg-white
+                                    border border-gray-300
+                                    focus:border-green-500
                                     outline-none
                                     resize-none
                                     transition
@@ -95,8 +95,8 @@ Please save the tracking ID for future reference.
                             className="
                                 w-full py-4 rounded-full
                                 bg-gradient-to-r from-green-500 to-emerald-600
-                                text-black font-bold text-lg
-                                shadow-xl hover:scale-[1.03]
+                                text-white font-bold text-lg
+                                shadow-lg hover:scale-[1.03]
                                 transition
                             "
                         >
@@ -106,7 +106,7 @@ Please save the tracking ID for future reference.
                 </div>
 
                 {/* ================= RIGHT : SUMMARY ================= */}
-                <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 lg:p-10 shadow-2xl">
+                <div className="bg-white border border-gray-200 rounded-3xl p-8 lg:p-10 shadow-xl">
 
                     <h2 className="text-2xl font-bold mb-6">
                         Order Summary
@@ -116,22 +116,22 @@ Please save the tracking ID for future reference.
                         {cart.map(item => (
                             <div
                                 key={`${item.id}-${item.size ?? "nosize"}`}
-                                className="flex justify-between gap-4 border-b border-white/10 pb-4"
+                                className="flex justify-between gap-4 border-b border-gray-200 pb-4"
                             >
                                 <div>
-                                    <p className="font-medium text-white">
+                                    <p className="font-medium text-gray-900">
                                         {item.name}
                                     </p>
                                     {item.size && (
-                                        <p className="text-xs text-gray-400">
+                                        <p className="text-xs text-gray-500">
                                             Size: {item.size}
                                         </p>
                                     )}
-                                    <p className="text-xs text-gray-400">
+                                    <p className="text-xs text-gray-500">
                                         Qty: {item.qty}
                                     </p>
                                 </div>
-                                <p className="font-semibold text-green-400">
+                                <p className="font-semibold text-green-600">
                                     ₹{item.qty * item.price}
                                 </p>
                             </div>
@@ -140,13 +140,13 @@ Please save the tracking ID for future reference.
 
                     <div className="mt-6 flex justify-between items-center text-xl font-extrabold">
                         <span>Total</span>
-                        <span className="text-green-400">
+                        <span className="text-green-600">
                             ₹{cart.reduce((s, i) => s + i.qty * i.price, 0)}
                         </span>
                     </div>
 
                     {/* TRUST */}
-                    <div className="mt-10 grid grid-cols-2 gap-4 text-xs text-gray-400">
+                    <div className="mt-10 grid grid-cols-2 gap-4 text-xs text-gray-600">
                         <Trust text="📦 Tracking ID Generated" />
                         <Trust text="🔒 Secure Order" />
                         <Trust text="🚚 Fast Delivery" />
@@ -171,7 +171,7 @@ function Input({
 }) {
     return (
         <div className="flex flex-col gap-2">
-            <label className="text-sm text-gray-400">
+            <label className="text-sm text-gray-600">
                 {label}
             </label>
             <input
@@ -179,9 +179,9 @@ function Input({
                 required={required}
                 className="
                     px-4 py-3 rounded-2xl
-                    bg-black/50
-                    border border-white/20
-                    focus:border-green-400
+                    bg-white
+                    border border-gray-300
+                    focus:border-green-500
                     outline-none
                     transition
                 "
@@ -192,7 +192,7 @@ function Input({
 
 function Trust({ text }: { text: string }) {
     return (
-        <div className="rounded-xl border border-white/10 py-3 px-2 text-center bg-black/30">
+        <div className="rounded-xl border border-gray-200 py-3 px-2 text-center bg-gray-50">
             {text}
         </div>
     );

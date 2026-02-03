@@ -12,17 +12,20 @@ export default function CartPage() {
         0
     );
 
+    /* ================= EMPTY CART ================= */
     if (cart.length === 0) {
         return (
-            <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white px-6">
-                <div className="text-center bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl max-w-md w-full">
-                    <p className="text-2xl mb-4">Your cart is empty 😢</p>
-                    <p className="text-gray-400 mb-8">
+            <main className="min-h-screen flex items-center justify-center bg-[#f6f7f9] px-6">
+                <div className="text-center bg-white border border-gray-200 rounded-3xl p-10 shadow-xl max-w-md w-full">
+                    <p className="text-2xl mb-4 font-semibold text-gray-900">
+                        Your cart is empty 😢
+                    </p>
+                    <p className="text-gray-500 mb-8">
                         Looks like you haven’t added anything yet
                     </p>
                     <Link
                         href="/"
-                        className="inline-block px-10 py-4 rounded-full bg-white text-black font-semibold hover:scale-105 transition"
+                        className="inline-block px-10 py-4 rounded-full bg-black text-white font-semibold hover:scale-105 transition"
                     >
                         Continue Shopping
                     </Link>
@@ -32,7 +35,7 @@ export default function CartPage() {
     }
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white px-4 sm:px-6 py-16">
+        <main className="min-h-screen bg-[#f6f7f9] px-4 sm:px-6 py-16 text-gray-900">
             <div className="max-w-7xl mx-auto">
 
                 {/* ================= HEADER ================= */}
@@ -40,7 +43,7 @@ export default function CartPage() {
                     <h1 className="text-3xl md:text-4xl font-extrabold">
                         Your Cart
                     </h1>
-                    <p className="mt-2 text-gray-400">
+                    <p className="mt-2 text-gray-500">
                         Review selected items, sizes & quantities
                     </p>
                 </div>
@@ -60,35 +63,35 @@ export default function CartPage() {
 
                     {/* ================= ORDER SUMMARY ================= */}
                     <div className="lg:sticky lg:top-24 h-fit">
-                        <div className="rounded-3xl bg-black/50 border border-white/10 p-8 shadow-xl">
+                        <div className="rounded-3xl bg-white border border-gray-200 p-8 shadow-xl">
 
                             <h2 className="text-xl font-semibold mb-6">
                                 Order Summary
                             </h2>
 
-                            <div className="space-y-4 text-sm text-gray-300">
+                            <div className="space-y-4 text-sm text-gray-600">
                                 {cart.map(item => (
                                     <div
                                         key={`${item.id}-summary-${item.size}`}
-                                        className="flex justify-between gap-4 border-b border-white/10 pb-3"
+                                        className="flex justify-between gap-4 border-b border-gray-200 pb-3"
                                     >
                                         <div>
-                                            <p className="font-medium text-white">
+                                            <p className="font-medium text-gray-900">
                                                 {item.name}
                                             </p>
 
                                             {item.size && (
-                                                <p className="text-gray-400 text-xs">
+                                                <p className="text-gray-500 text-xs">
                                                     Size: {item.size}
                                                 </p>
                                             )}
 
-                                            <p className="text-gray-400 text-xs">
+                                            <p className="text-gray-500 text-xs">
                                                 Qty: {item.qty}
                                             </p>
                                         </div>
 
-                                        <div className="font-semibold whitespace-nowrap">
+                                        <div className="font-semibold whitespace-nowrap text-gray-900">
                                             ₹{item.qty * item.price}
                                         </div>
                                     </div>
@@ -100,7 +103,7 @@ export default function CartPage() {
                                 <span>₹{total}</span>
                             </div>
 
-                            <p className="mt-2 text-xs text-gray-400">
+                            <p className="mt-2 text-xs text-gray-500">
                                 * Each size variant is treated as a separate item
                             </p>
 
@@ -108,14 +111,14 @@ export default function CartPage() {
                             <div className="mt-8 space-y-4">
                                 <Link
                                     href="/checkout"
-                                    className="block text-center py-4 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:scale-[1.02] transition"
+                                    className="block text-center py-4 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold shadow hover:scale-[1.02] transition"
                                 >
                                     Proceed to Checkout →
                                 </Link>
 
                                 <Link
                                     href="/"
-                                    className="block text-center py-4 rounded-full border border-white/30 hover:bg-white hover:text-black transition"
+                                    className="block text-center py-4 rounded-full border border-gray-400 hover:bg-black hover:text-white transition"
                                 >
                                     Continue Shopping
                                 </Link>
@@ -125,7 +128,7 @@ export default function CartPage() {
                 </div>
 
                 {/* ================= TRUST ================= */}
-                <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-400 text-center">
+                <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-500 text-center">
                     <div>🔒 Secure Checkout</div>
                     <div>⚡ Fast Order</div>
                     <div>💬 WhatsApp Support</div>

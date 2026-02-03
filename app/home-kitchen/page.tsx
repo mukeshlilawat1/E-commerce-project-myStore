@@ -29,36 +29,36 @@ export default function HomeKitchenPage() {
     });
 
     return (
-        <main className="bg-black text-white min-h-screen">
+        <main className="bg-gradient-to-b from-gray-50 via-white to-amber-50 text-gray-900 min-h-screen">
 
             {/* ================= HERO ================= */}
             <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center overflow-hidden">
                 <div
-                    className="absolute inset-0 bg-cover bg-center"
+                    className="absolute inset-0 bg-cover bg-center scale-105"
                     style={{ backgroundImage: "url('/homeKitchen.jpg')" }}
                 />
-                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-white/40 backdrop-blur-sm" />
 
                 <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-16 ml-auto text-right">
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold">
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gray-900">
                         Home & Kitchen
                     </h1>
 
-                    <p className="mt-4 sm:mt-6 text-gray-300 max-w-xl ml-auto">
+                    <p className="mt-4 sm:mt-6 text-gray-700 max-w-xl ml-auto">
                         Essentials • Decor • Daily Comfort
                     </p>
 
                     <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-end">
                         <Link
                             href="/cart"
-                            className="px-8 sm:px-10 py-4 rounded-full bg-white text-black font-semibold"
+                            className="px-8 sm:px-10 py-4 rounded-full bg-black text-white font-semibold hover:scale-105 transition"
                         >
                             View Cart
                         </Link>
 
                         <Link
                             href="/"
-                            className="px-8 sm:px-10 py-4 rounded-full border border-white font-semibold hover:bg-white hover:text-black transition"
+                            className="px-8 sm:px-10 py-4 rounded-full border border-black font-semibold hover:bg-black hover:text-white transition"
                         >
                             Back to Home
                         </Link>
@@ -67,7 +67,7 @@ export default function HomeKitchenPage() {
             </section>
 
             {/* ================= CATEGORY CARDS ================= */}
-            <section className="py-14 sm:py-20 border-b border-white/10">
+            <section className="py-14 sm:py-20 border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
                     <h2 className="text-2xl sm:text-3xl font-bold mb-12 text-center">
@@ -99,7 +99,7 @@ export default function HomeKitchenPage() {
                     </h2>
 
                     {items.length === 0 ? (
-                        <p className="text-center text-gray-400 text-lg">
+                        <p className="text-center text-gray-500 text-lg">
                             No products found in this category
                         </p>
                     ) : (
@@ -120,7 +120,14 @@ export default function HomeKitchenPage() {
 
                 <Link
                     href="/cart"
-                    className="inline-block px-10 sm:px-12 py-4 sm:py-5 rounded-full bg-white text-black font-semibold hover:scale-105 transition"
+                    className="
+                        inline-block
+                        px-10 sm:px-12 py-4 sm:py-5
+                        rounded-full
+                        bg-gradient-to-r from-amber-500 to-orange-500
+                        text-white font-semibold
+                        shadow-xl hover:scale-105 transition
+                    "
                 >
                     Order on WhatsApp 💬
                 </Link>
@@ -149,7 +156,7 @@ function CategoryCard({
                 group relative h-[120px] sm:h-[140px]
                 rounded-xl overflow-hidden
                 border transition
-                ${active ? "border-white" : "border-white/10"}
+                ${active ? "border-black" : "border-gray-200"}
             `}
         >
             <img
@@ -158,10 +165,10 @@ function CategoryCard({
                 className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition"
             />
 
-            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition" />
+            <div className="absolute inset-0 bg-white/55 group-hover:bg-white/30 transition" />
 
             <div className="relative z-10 h-full flex items-center justify-center px-2">
-                <span className="text-xs sm:text-sm font-semibold text-white text-center">
+                <span className="text-xs sm:text-sm font-semibold text-gray-900 text-center">
                     {title}
                 </span>
             </div>

@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { products } from "@/data/products";
 
-
 export default function Navbar() {
     const { cart } = useCart();
     const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
@@ -48,11 +47,11 @@ export default function Navbar() {
         .slice(0, 5);
 
     return (
-        <header className="sticky top-0 z-50 bg-white/90 dark:bg-black/80 backdrop-blur border-b border-black/10 dark:border-white/10">
+        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-200">
             <nav className="max-w-7xl mx-auto px-5 py-4 flex items-center gap-4">
 
                 {/* LOGO */}
-                <Link href="/" className="text-xl font-semibold text-black dark:text-white">
+                <Link href="/" className="text-xl font-semibold text-gray-900">
                     MyStore
                 </Link>
 
@@ -65,20 +64,24 @@ export default function Navbar() {
                             setShowSuggestions(true);
                         }}
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                        placeholder="Search products..."
+                        placeholder="Search products, brands, categories…"
                         className="
-              w-full px-4 py-2 rounded-md
-              border border-black/10 dark:border-white/10
-              bg-white dark:bg-black
-              text-sm outline-none
-            "
+                            w-full px-4 py-2 rounded-md
+                            border border-gray-300
+                            bg-white
+                            text-sm
+                            text-gray-900
+                            placeholder:text-gray-400
+                            outline-none
+                            focus:ring-2 focus:ring-black/10
+                        "
                     />
 
                     {/* CLEAR BUTTON */}
                     {query && (
                         <button
                             onClick={clearSearch}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black dark:hover:text-white"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
                         >
                             ❌
                         </button>
@@ -86,10 +89,10 @@ export default function Navbar() {
 
                     {/* SUGGESTIONS */}
                     {showSuggestions && debouncedQuery && (
-                        <div className="absolute z-50 mt-2 w-full bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-md">
+                        <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                             {suggestions.length === 0 ? (
                                 <p className="px-4 py-3 text-sm text-gray-400">
-                                    No suggestions
+                                    No suggestions found
                                 </p>
                             ) : (
                                 suggestions.map(p => (
@@ -99,7 +102,7 @@ export default function Navbar() {
                                             router.push(`/product/${p.id}`);
                                             setShowSuggestions(false);
                                         }}
-                                        className="px-4 py-3 text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/10"
+                                        className="px-4 py-3 text-sm cursor-pointer hover:bg-gray-100"
                                     >
                                         {p.name}
                                     </div>
@@ -110,7 +113,7 @@ export default function Navbar() {
                 </div>
 
                 {/* DESKTOP NAV */}
-                <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
                     <NavLink href="/" label="Home" />
                     <NavLink href="/about" label="About" />
                     <NavLink href="/help" label="Help" />
@@ -119,10 +122,9 @@ export default function Navbar() {
 
                 {/* RIGHT SIDE */}
                 <div className="ml-auto flex items-center gap-4">
-                  
                     <Link
                         href="/cart"
-                        className="relative px-4 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black text-sm font-medium"
+                        className="relative px-4 py-2 rounded-md bg-black text-white text-sm font-medium"
                     >
                         Cart
                         {totalItems > 0 && (
@@ -132,10 +134,10 @@ export default function Navbar() {
                         )}
                     </Link>
 
-                    {/* MOBILE MENU */}
+                    {/* MOBILE MENU BUTTON */}
                     <button
                         onClick={() => setOpen(!open)}
-                        className="md:hidden text-xl text-black dark:text-white"
+                        className="md:hidden text-xl text-gray-900"
                     >
                         ☰
                     </button>
@@ -144,7 +146,7 @@ export default function Navbar() {
 
             {/* ================= MOBILE MENU ================= */}
             {open && (
-                <div className="md:hidden bg-white dark:bg-black border-t border-black/10 dark:border-white/10">
+                <div className="md:hidden bg-white border-t border-gray-200">
 
                     {/* MOBILE SEARCH */}
                     <div className="px-5 py-4 relative">
@@ -154,12 +156,20 @@ export default function Navbar() {
                                 setQuery(e.target.value);
                                 setShowSuggestions(true);
                             }}
-                            placeholder="Search products..."
-                            className="w-full px-4 py-2 rounded-md border text-sm outline-none"
+                            placeholder="Search items…"
+                            className="
+                                w-full px-4 py-2 rounded-md
+                                border border-gray-300
+                                bg-white
+                                text-sm
+                                text-gray-900
+                                placeholder:text-gray-400
+                                outline-none
+                            "
                         />
 
                         {showSuggestions && debouncedQuery && (
-                            <div className="mt-2 bg-white dark:bg-black border rounded-md">
+                            <div className="mt-2 bg-white border border-gray-200 rounded-md shadow">
                                 {suggestions.map(p => (
                                     <div
                                         key={p.id}
@@ -168,7 +178,7 @@ export default function Navbar() {
                                             setOpen(false);
                                             setShowSuggestions(false);
                                         }}
-                                        className="px-4 py-3 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+                                        className="px-4 py-3 text-sm hover:bg-gray-100"
                                     >
                                         {p.name}
                                     </div>
@@ -178,7 +188,7 @@ export default function Navbar() {
                     </div>
 
                     {/* MOBILE LINKS */}
-                    <div className="flex flex-col px-5 pb-4 gap-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <div className="flex flex-col px-5 pb-4 gap-4 text-sm font-medium text-gray-700">
                         <MobileLink href="/" label="Home" onClick={() => setOpen(false)} />
                         <MobileLink href="/about" label="About" onClick={() => setOpen(false)} />
                         <MobileLink href="/help" label="Help" onClick={() => setOpen(false)} />
@@ -194,7 +204,7 @@ export default function Navbar() {
 
 function NavLink({ href, label }: { href: string; label: string }) {
     return (
-        <Link href={href} className="hover:text-black dark:hover:text-white transition">
+        <Link href={href} className="hover:text-black transition">
             {label}
         </Link>
     );
@@ -213,7 +223,7 @@ function MobileLink({
         <Link
             href={href}
             onClick={onClick}
-            className="py-2 border-b border-black/5 dark:border-white/10"
+            className="py-2 border-b border-gray-200"
         >
             {label}
         </Link>

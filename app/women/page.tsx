@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function WomenPage() {
     const [activeFilter, setActiveFilter] = useState("All");
 
-    /* ================= FILTER LOGIC (FIXED) ================= */
+    /* ================= FILTER LOGIC (UNCHANGED) ================= */
     const womenProducts = products.filter(p => {
         // All → women + jewellery
         if (activeFilter === "All") {
@@ -20,7 +20,7 @@ export default function WomenPage() {
             return p.category === "women-jewellery";
         }
 
-        // Other filters (Top, Dress, Kurti...)
+        // Other filters
         return (
             p.category === "women" &&
             p.name.toLowerCase().includes(activeFilter.toLowerCase())
@@ -28,7 +28,7 @@ export default function WomenPage() {
     });
 
     return (
-        <main className="relative">
+        <main className="relative bg-[#f6f7f9] text-gray-900">
 
             {/* ================= HERO ================= */}
             <section className="relative min-h-[90vh] flex items-center overflow-hidden">
@@ -36,28 +36,28 @@ export default function WomenPage() {
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: "url('/womenHome.jpg')" }}
                 />
-                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-white/70" />
 
                 <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 ml-auto text-right">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold">
                         Women Collection
                     </h1>
 
-                    <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-200 max-w-xl ml-auto">
+                    <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-700 max-w-xl ml-auto">
                         Elegant fashion • Modern styles • Designed to make you stand out
                     </p>
 
                     <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-end">
                         <Link
                             href="/cart"
-                            className="px-8 sm:px-10 py-4 rounded-full bg-white text-black font-semibold text-center"
+                            className="px-8 sm:px-10 py-4 rounded-full bg-black text-white font-semibold text-center"
                         >
                             View Cart
                         </Link>
 
                         <Link
                             href="/"
-                            className="px-8 sm:px-10 py-4 rounded-full border border-white text-white font-semibold text-center hover:bg-white hover:text-black transition"
+                            className="px-8 sm:px-10 py-4 rounded-full border border-gray-400 text-gray-900 font-semibold text-center hover:bg-black hover:text-white transition"
                         >
                             Explore More
                         </Link>
@@ -66,7 +66,7 @@ export default function WomenPage() {
             </section>
 
             {/* ================= FILTER BAR ================= */}
-            <section className="relative z-10 bg-white/80 dark:bg-gray-950/80 backdrop-blur border-b border-black/5 dark:border-white/10">
+            <section className="relative z-10 bg-white/80 backdrop-blur border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex gap-3 overflow-x-auto scrollbar-hide">
                     {["All", "Kurti", "Dress", "Top", "Ethnic", "Footwear", "Jewellery"].map(label => (
                         <FilterBadge
@@ -80,7 +80,7 @@ export default function WomenPage() {
             </section>
 
             {/* ================= PRODUCTS GRID ================= */}
-            <section className="py-16 sm:py-24 px-4 sm:px-6">
+            <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#f3f4f6]">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
                         {womenProducts.map(p => (
@@ -91,18 +91,18 @@ export default function WomenPage() {
             </section>
 
             {/* ================= CTA ================= */}
-            <section className="pb-16 sm:pb-24 text-center px-4">
+            <section className="pb-16 sm:pb-24 text-center px-4 bg-[#f6f7f9]">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
                     Loved the Collection?
                 </h2>
 
-                <p className="text-gray-600 dark:text-gray-400 mb-8">
+                <p className="text-gray-600 mb-8">
                     Add your favorite items and order instantly via WhatsApp
                 </p>
 
                 <Link
                     href="/cart"
-                    className="inline-block px-10 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-pink-600 to-purple-600 text-white"
+                    className="inline-block px-10 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-pink-500 to-purple-500 text-white"
                 >
                     Order Now 💬
                 </Link>
@@ -124,10 +124,11 @@ function FilterBadge({
     return (
         <span
             onClick={() => onClick(label)}
-            className={`px-5 py-2 rounded-full text-sm font-medium cursor-pointer whitespace-nowrap
+            className={`px-5 py-2 rounded-full text-sm font-medium cursor-pointer whitespace-nowrap transition
             ${active
-                    ? "bg-black text-white dark:bg-white dark:text-black"
-                    : "bg-pink-50 text-pink-700 dark:bg-gray-900 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-800"}`}
+                    ? "bg-black text-white"
+                    : "bg-white text-pink-700 border border-pink-200 hover:bg-pink-50"
+                }`}
         >
             {label}
         </span>

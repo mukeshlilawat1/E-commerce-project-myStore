@@ -24,18 +24,19 @@ export default function ProductCard({ product }: Props) {
         <div
             className="
                 group
-                bg-black
-                border border-white/10
+                bg-white
+                border border-gray-200
                 rounded-2xl
                 overflow-hidden
                 flex flex-col
                 transition
-                hover:border-white/30
+                hover:shadow-xl
+                hover:border-gray-300
             "
         >
             {/* IMAGE (click safe) */}
             <div
-                className="relative w-full aspect-[3/4] bg-gray-900 overflow-hidden"
+                className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
@@ -56,7 +57,7 @@ export default function ProductCard({ product }: Props) {
             </div>
 
             {/* CONTENT */}
-            <div className="p-4 flex flex-col gap-2 text-white flex-1">
+            <div className="p-4 flex flex-col gap-2 text-gray-900 flex-1">
                 {/* ⭐ RATING */}
                 <Rating value={product.rating} />
 
@@ -66,13 +67,13 @@ export default function ProductCard({ product }: Props) {
                 </h3>
 
                 {/* PRICE */}
-                <p className="text-gray-300 text-sm font-medium">
+                <p className="text-gray-700 text-sm font-medium">
                     ₹{product.price}
                 </p>
 
                 {/* DESCRIPTION */}
                 {product.description && (
-                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">
+                    <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
                         {product.description}
                     </p>
                 )}
@@ -84,10 +85,11 @@ export default function ProductCard({ product }: Props) {
                         mt-2
                         w-full text-center
                         py-2
-                        border border-white/30
+                        border border-gray-300
                         rounded-md
                         text-sm
-                        hover:bg-white hover:text-black
+                        text-gray-800
+                        hover:bg-black hover:text-white
                         transition
                     "
                 >
@@ -111,11 +113,11 @@ export default function ProductCard({ product }: Props) {
                     className="
                         mt-auto
                         w-full py-2
-                        bg-white text-black
+                        bg-black text-white
                         rounded-md
                         font-medium
                         text-sm
-                        hover:bg-gray-200
+                        hover:bg-gray-800
                         transition
                     "
                 >

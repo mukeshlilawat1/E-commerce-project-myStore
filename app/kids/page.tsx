@@ -23,36 +23,36 @@ export default function KidsPage() {
     });
 
     return (
-        <main className="bg-black text-white">
+        <main className="bg-gradient-to-b from-sky-50 via-white to-pink-50 text-gray-900">
 
             {/* ================= HERO ================= */}
             <section className="relative min-h-[75vh] sm:min-h-[80vh] flex items-center overflow-hidden">
                 <div
-                    className="absolute inset-0 bg-cover bg-center"
+                    className="absolute inset-0 bg-cover bg-center scale-105"
                     style={{ backgroundImage: "url('/kidsHome.jpg')" }}
                 />
-                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-white/40 backdrop-blur-sm" />
 
                 <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-16 ml-auto text-right">
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight">
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight text-gray-900">
                         Kids Clothing
                     </h1>
 
-                    <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-300 max-w-xl ml-auto">
+                    <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-700 max-w-xl ml-auto">
                         Comfortable • Colorful • Everyday Fun Wear
                     </p>
 
                     <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-end">
                         <Link
                             href="/cart"
-                            className="px-8 sm:px-10 py-4 rounded-full bg-white text-black font-semibold text-center hover:scale-105 transition"
+                            className="px-8 sm:px-10 py-4 rounded-full bg-black text-white font-semibold text-center hover:scale-105 transition"
                         >
                             View Cart
                         </Link>
 
                         <Link
                             href="/"
-                            className="px-8 sm:px-10 py-4 rounded-full border border-white font-semibold text-center hover:bg-white hover:text-black transition"
+                            className="px-8 sm:px-10 py-4 rounded-full border border-black font-semibold text-center hover:bg-black hover:text-white transition"
                         >
                             Back to Home
                         </Link>
@@ -60,8 +60,8 @@ export default function KidsPage() {
                 </div>
             </section>
 
-            {/* ================= FILTER BAR (NOT STICKY) ================= */}
-            <section className="relative z-10 bg-black/80 backdrop-blur border-b border-white/10">
+            {/* ================= FILTER BAR ================= */}
+            <section className="relative z-10 bg-white/90 backdrop-blur border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex gap-3 overflow-x-auto scrollbar-hide">
                     <FilterBadge label="All" active={filter === "all"} onClick={() => setFilter("all")} />
                     <FilterBadge label="Boys Wear" active={filter === "boys"} onClick={() => setFilter("boys")} />
@@ -76,7 +76,7 @@ export default function KidsPage() {
             <section className="py-16 sm:py-24 px-4 sm:px-6">
                 <div className="max-w-7xl mx-auto">
                     {kidsProducts.length === 0 ? (
-                        <p className="text-center text-gray-400 text-lg">
+                        <p className="text-center text-gray-500 text-lg">
                             No products found in this category
                         </p>
                     ) : (
@@ -95,13 +95,22 @@ export default function KidsPage() {
                     Cute Styles for Little Stars ✨
                 </h2>
 
-                <p className="text-gray-400 mb-8 sm:mb-10">
+                <p className="text-gray-600 mb-8 sm:mb-10">
                     Add items to cart and order instantly via WhatsApp
                 </p>
 
                 <Link
                     href="/cart"
-                    className="inline-block px-10 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-semibold bg-white text-black hover:scale-105 transition"
+                    className="
+                        inline-block
+                        px-10 sm:px-12 py-4 sm:py-5
+                        rounded-full
+                        text-lg sm:text-xl
+                        font-semibold
+                        bg-gradient-to-r from-pink-500 to-purple-500
+                        text-white
+                        shadow-xl hover:scale-105 transition
+                    "
                 >
                     Order on WhatsApp 💬
                 </Link>
@@ -127,8 +136,8 @@ function FilterBadge({
             className={`
                 px-5 py-2 rounded-full text-sm font-medium transition whitespace-nowrap
                 ${active
-                    ? "bg-white text-black"
-                    : "bg-[#111] text-gray-300 border border-white/10 hover:bg-white/10"}
+                    ? "bg-black text-white"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"}
             `}
         >
             {label}

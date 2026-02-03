@@ -2,16 +2,16 @@ import Link from "next/link";
 
 export default function HelpPage() {
     return (
-        <main className="bg-black text-white min-h-screen">
+        <main className="bg-gradient-to-b from-white via-gray-50 to-white text-gray-900 min-h-screen">
 
             {/* ================= PAGE HEADER ================= */}
-            <section className="pt-24 pb-16">
+            <section className="pt-28 pb-20">
                 <div className="max-w-6xl mx-auto px-6">
-                    <h1 className="text-4xl md:text-5xl font-extrabold">
+                    <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
                         Help Center
                     </h1>
 
-                    <p className="mt-6 text-lg text-gray-300 max-w-2xl">
+                    <p className="mt-6 text-lg text-gray-600 max-w-2xl leading-relaxed">
                         Find answers to common questions and learn how to shop
                         easily using our WhatsApp-based system.
                     </p>
@@ -19,7 +19,7 @@ export default function HelpPage() {
             </section>
 
             {/* ================= HELP SECTIONS ================= */}
-            <section className="py-20 border-t border-white/10">
+            <section className="py-24 border-t border-gray-200">
                 <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10">
 
                     <HelpCard
@@ -62,13 +62,13 @@ export default function HelpPage() {
             </section>
 
             {/* ================= CTA ================= */}
-            <section className="py-20 border-t border-white/10">
+            <section className="py-24 border-t border-gray-200">
                 <div className="max-w-4xl mx-auto px-6 text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6">
                         Still Need Help?
                     </h2>
 
-                    <p className="text-gray-400 mb-10">
+                    <p className="text-gray-600 mb-12 leading-relaxed">
                         Our support team is available to assist you directly on WhatsApp.
                     </p>
 
@@ -76,14 +76,25 @@ export default function HelpPage() {
                         <a
                             href="https://wa.me/91XXXXXXXXXX"
                             target="_blank"
-                            className="px-10 py-4 bg-green-500 text-black rounded-full font-semibold hover:scale-105 transition"
+                            className="
+                                px-10 py-4
+                                bg-gradient-to-r from-green-500 to-emerald-600
+                                text-black rounded-full font-semibold
+                                shadow-lg hover:scale-105 transition
+                            "
                         >
                             WhatsApp Support
                         </a>
 
                         <Link
                             href="/"
-                            className="px-10 py-4 border border-white rounded-full hover:bg-white hover:text-black transition"
+                            className="
+                                px-10 py-4
+                                border border-gray-300
+                                rounded-full
+                                hover:bg-black hover:text-white
+                                transition
+                            "
                         >
                             Back to Home
                         </Link>
@@ -104,12 +115,22 @@ function HelpCard({
     items: string[];
 }) {
     return (
-        <div className="bg-[#111] border border-white/10 rounded-xl p-8 hover:border-white/30 transition">
-            <h3 className="text-xl font-semibold mb-4">
+        <div
+            className="
+                bg-white
+                border border-gray-200
+                rounded-2xl p-10
+                hover:border-gray-400
+                hover:-translate-y-1
+                transition
+                shadow-lg
+            "
+        >
+            <h3 className="text-xl font-semibold mb-5">
                 {title}
             </h3>
 
-            <ul className="space-y-3 text-gray-400">
+            <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
                 {items.map((item, i) => (
                     <li key={i}>• {item}</li>
                 ))}
