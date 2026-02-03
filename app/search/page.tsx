@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 const categories = ["all", "men", "women", "shoes", "watches"];
 
-export default function SearchPage() {
+export default function SearchClient() {
     const searchParams = useSearchParams();
 
     const initialQuery = searchParams.get("q") || "";
@@ -54,12 +54,12 @@ export default function SearchPage() {
                             key={c}
                             onClick={() => setCategory(c)}
                             className={`
-                px-4 py-2 rounded-full text-sm transition
-                ${category === c
+                              px-4 py-2 rounded-full text-sm transition
+                              ${category === c
                                     ? "bg-white text-black"
                                     : "bg-[#111] text-gray-300 border border-white/10 hover:bg-white/10"
                                 }
-              `}
+                            `}
                         >
                             {c.toUpperCase()}
                         </button>
@@ -81,8 +81,11 @@ export default function SearchPage() {
                     </p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                        {filteredProducts.map(product => (
-                            <ProductCard key={product.id} product={product} />
+                        {filteredProducts.map((product, index) => (
+                            <ProductCard
+                                key={`${product.id}-${index}`}
+                                product={product}
+                            />
                         ))}
                     </div>
                 )}
