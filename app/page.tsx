@@ -1,18 +1,86 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
-import Image from "next/image";
+
+/* ======================================================================
+   HERO SLIDES DATA (ADS STYLE)
+====================================================================== */
+
+const heroSlides = [
+  {
+    image: "/hero/men.png",
+    title: "Men's Fashion",
+    subtitle: "Premium styles for everyday confidence",
+    cta: "Shop Men",
+    link: "/men",
+    position: "object-left md:object-center",
+  },
+  {
+    image: "/hero/womens.png",
+    title: "Women's Collection",
+    subtitle: "Elegant looks made to turn heads",
+    cta: "Shop Women",
+    link: "/women",
+    position: "object-left md:object-center",
+  },
+  {
+    image: "/hero/kids.png",
+    title: "Kids Wear",
+    subtitle: "Comfortable • Colorful • Fun",
+    cta: "Shop Kids",
+    link: "/kids",
+    position: "object-center",
+  },
+  {
+    image: "/hero/shoes.png",
+    title: "Trending Shoes",
+    subtitle: "Step into style & comfort",
+    cta: "Shop Shoes",
+    link: "/shoes",
+    position: "object-center",
+  },
+  {
+    image: "/hero/kitchen.png",
+    title: "Home & Kitchen",
+    subtitle: "Upgrade your everyday living",
+    cta: "Explore",
+    link: "/home-kitchen",
+    position: "object-center",
+  },
+];
+
+/* ======================================================================
+   HOME PAGE
+====================================================================== */
 
 export default function HomePage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  /* ================= FEATURED PRODUCTS ================= */
+  /* ================= HERO AUTO SLIDE ================= */
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const slide = heroSlides[currentSlide];
+
+  /* ================= FEATURED PRODUCTS LOGIC ================= */
+
   const featuredProducts = useMemo(() => {
-    const categories = Array.from(new Set(products.map(p => p.category)));
+    const categories = Array.from(
+      new Set(products.map(p => p.category))
+    );
 
     const mixed = categories.flatMap(category =>
       products.filter(p => p.category === category).slice(0, 4)
@@ -21,7 +89,8 @@ export default function HomePage() {
     return mixed.slice(0, 20);
   }, []);
 
-  /* ================= AUTO SCROLL ================= */
+  /* ================= FEATURED AUTO SCROLL ================= */
+
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
@@ -34,7 +103,9 @@ export default function HomePage() {
     const speed = window.innerWidth < 768 ? 0.25 : 0.35;
 
     const observer = new IntersectionObserver(
-      ([entry]) => (isVisible = entry.isIntersecting),
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
       { threshold: 0.2 }
     );
 
@@ -43,13 +114,18 @@ export default function HomePage() {
     const animate = () => {
       if (!isUserInteracting && isVisible) {
         scroll += speed;
-        if (scroll >= el.scrollWidth - el.clientWidth) scroll = 0;
+        if (scroll >= el.scrollWidth - el.clientWidth) {
+          scroll = 0;
+        }
         el.scrollLeft = scroll;
       }
       rafId = requestAnimationFrame(animate);
     };
 
-    const stop = () => (isUserInteracting = true);
+    const stop = () => {
+      isUserInteracting = true;
+    };
+
     const start = () => {
       scroll = el.scrollLeft;
       isUserInteracting = false;
@@ -68,38 +144,54 @@ export default function HomePage() {
     };
   }, []);
 
+  /* ================= RENDER ================= */
+
   return (
     <main className="bg-gray-50 text-gray-900">
 
-      {/* ================= HERO ================= */}
+      {/* ======================================================
+         HERO SECTION
+      ====================================================== */}
       <section className="relative min-h-[60vh] md:min-h-[80vh] flex items-center overflow-hidden">
-        <Image
-          src="/home.jpg"
-          alt="Hero"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover scale-105"
-        />
-        <div className="absolute inset-0 bg-black/55" />
 
-        <div className="relative z-10 w-full max-w-5xl px-6 md:px-16 ml-auto text-right">
+        {/* Background Image */}
+        <Link href={slide.link} className="absolute inset-0">
+          <Image
+            src={slide.image}
+            alt={slide.title}
+            fill
+            priority
+            sizes="100vw"
+            className="object-fill md:object-fill transition-all duration-700"
+          />
+
+        </Link>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/40 to-black/20" />
+
+        {/* Hero Content */}
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10 w-full max-w-5xl px-6 md:px-16 ml-auto text-right"
+        >
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-white">
-            Smart Shopping.
-            <br />
-            Simple WhatsApp Order.
+            {slide.title}
           </h1>
 
           <p className="mt-6 text-base md:text-xl text-gray-200 max-w-xl ml-auto">
-            Choose category • Add to cart • Order instantly
+            {slide.subtitle}
           </p>
 
           <div className="mt-8 flex gap-4 justify-end flex-wrap">
             <Link
-              href="/men"
+              href={slide.link}
               className="px-8 py-3 md:px-10 md:py-4 rounded-full bg-white text-black font-semibold hover:scale-105 transition"
             >
-              Start Shopping
+              {slide.cta}
             </Link>
 
             <Link
@@ -109,14 +201,17 @@ export default function HomePage() {
               Cart
             </Link>
           </div>
-        </div>
+        </motion.div>
 
+        {/* Scroll Indicator */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white text-sm opacity-80 animate-bounce">
           ↓ Scroll
         </div>
       </section>
 
-      {/* ================= CATEGORIES ================= */}
+      {/* ======================================================
+         CATEGORIES
+      ====================================================== */}
       <section className="-mt-20 pt-28 pb-24 relative z-20">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold mb-12">
@@ -134,7 +229,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ================= FEATURED ================= */}
+      {/* ======================================================
+         FEATURED PRODUCTS
+      ====================================================== */}
       <section className="py-24 bg-white">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -151,25 +248,59 @@ export default function HomePage() {
             ref={sliderRef}
             className="flex gap-6 overflow-x-auto pb-6 cursor-grab"
           >
-            {featuredProducts.map(p => (
+            {featuredProducts.map(product => (
               <motion.div
-                key={p.id}
+                key={product.id}
                 whileHover={{ scale: 1.04 }}
                 transition={{ duration: 0.2 }}
                 className="min-w-[220px] sm:min-w-[260px]"
               >
-                <ProductCard product={p} />
+                <ProductCard product={product} />
               </motion.div>
             ))}
           </div>
         </motion.div>
       </section>
 
+      {/* /* ================= TRUST SECTION ================= */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6">
+
+          {/* Box */}
+          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 md:p-12">
+
+            {/* Heading */}
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
+              Why Shop With Us?
+            </h2>
+
+            <p className="mt-3 text-center text-gray-600 max-w-2xl mx-auto">
+              Trusted by customers across India for quality products and reliable service
+            </p>
+
+            {/* Points */}
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+              <TrustPoint text="Cash on Delivery Available" />
+              <TrustPoint text="100% Original Products" />
+              <TrustPoint text="Fast Shipping All Over India" />
+              <TrustPoint text="Easy Return & Exchange" />
+              <TrustPoint text="Direct WhatsApp Support" />
+              <TrustPoint text="Trusted by 460+ Happy Customers" />
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+
     </main>
   );
 }
 
-/* ================= CATEGORY CARD ================= */
+/* ======================================================================
+   CATEGORY CARD COMPONENT
+====================================================================== */
 
 function CategoryCard({
   title,
@@ -201,5 +332,21 @@ function CategoryCard({
         </h3>
       </div>
     </Link>
+  );
+}
+
+function TrustPoint({ text }: { text: string }) {
+  return (
+    <div className="flex items-center gap-4 bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition">
+
+      {/* Check Icon */}
+      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">
+        ✓
+      </div>
+
+      <p className="text-gray-800 font-medium">
+        {text}
+      </p>
+    </div>
   );
 }
