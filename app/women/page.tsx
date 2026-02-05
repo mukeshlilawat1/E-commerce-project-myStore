@@ -103,7 +103,7 @@ export default function WomenPage() {
                             No products found
                         </p>
                     ) : (
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {womenProducts.map(p => (
                                 <ProductCard key={p.id} product={p} />
                             ))}
