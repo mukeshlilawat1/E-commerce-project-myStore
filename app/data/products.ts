@@ -2054,5 +2054,520 @@ export const products: Product[] = [
 
     rating: 4.9,
     reviews: 189
-  }
+  },
+
+  // ================= T-SHIRTS =================
+  {
+    id: 614,
+    name: "Marvel Avengers Kids T-Shirt",
+    price: 999,
+
+    category: "kids",
+    subCategory: "tshirts",
+
+    description:
+      "Soft cotton Marvel Avengers printed t-shirt for kids with vibrant character design.",
+
+    images: ["/kids/child1.jpeg"],
+
+    colors: ["Blue"],
+    sizes: ["2-3Y", "4-5Y", "6-7Y", "8-9Y"],
+
+    material: "Cotton",
+
+    rating: 4.7,
+    reviews: 142
+  },
+
+  {
+    id: 615,
+    name: "Chip & Dale Cartoon Kids T-Shirt",
+    price: 899,
+
+    category: "kids",
+    subCategory: "tshirts",
+
+    description:
+      "Fun Chip & Dale cartoon printed t-shirt made with breathable cotton fabric.",
+
+    images: ["/kids/child2.jpeg"],
+
+    colors: ["Yellow"],
+    sizes: ["2-3Y", "4-5Y", "6-7Y"],
+
+    material: "Cotton",
+
+    rating: 4.6,
+    reviews: 118
+  },
+
+  {
+    id: 616,
+    name: "Marvel Spider-Man Kids T-Shirt",
+    price: 949,
+
+    category: "kids",
+    subCategory: "tshirts",
+
+    description:
+      "Spider-Man themed kids t-shirt with premium print and comfortable fit.",
+
+    images: ["/kids/child3.jpeg"],
+
+    colors: ["Blue"],
+    sizes: ["3-4Y", "5-6Y", "7-8Y"],
+
+    material: "Cotton",
+
+    rating: 4.8,
+    reviews: 165
+  },
+
+  {
+    id: 617,
+    name: "Fun Robot Print Kids T-Shirt",
+    price: 799,
+
+    category: "kids",
+    subCategory: "tshirts",
+
+    description:
+      "Cute robot graphic t-shirt for kids, perfect for daily casual wear.",
+
+    images: ["/kids/child4.jpeg"],
+
+    colors: ["Beige"],
+    sizes: ["2-3Y", "4-5Y", "6-7Y"],
+
+    material: "Cotton",
+
+    rating: 4.5,
+    reviews: 96
+  },
+
+  {
+    id: 618,
+    name: "Cute Cat Cartoon Kids T-Shirt",
+    price: 849,
+
+    category: "kids",
+    subCategory: "tshirts",
+
+    description:
+      "Adorable cat cartoon printed t-shirt made from soft and skin-friendly fabric.",
+
+    images: ["/kids/kids10.jpeg"],
+
+    colors: ["White"],
+    sizes: ["2-3Y", "4-5Y", "6-7Y", "8-9Y"],
+
+    material: "Cotton",
+
+    rating: 4.7,
+    reviews: 131
+  },
+
+  // ================= GIRLS DRESSES =================
+  {
+    id: 619,
+    name: "Floral Smocked Girls Party Dress",
+    price: 1899,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Beautiful floral smocked dress with soft cotton fabric, perfect for special occasions.",
+
+    images: ["/kids/girl1.jpeg"],
+
+    colors: ["Light Blue"],
+    sizes: ["2-3Y", "3-4Y", "4-5Y", "5-6Y"],
+
+    material: "Cotton",
+
+    rating: 4.8,
+    reviews: 132
+  },
+
+  {
+    id: 620,
+    name: "Pink Floral Girls Dress with Cardigan",
+    price: 2099,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Elegant floral dress paired with soft pink cardigan, ideal for parties and outings.",
+
+    images: ["/kids/girl2.jpeg"],
+
+    colors: ["Pink", "White"],
+    sizes: ["2-3Y", "3-4Y", "4-5Y"],
+
+    material: "Cotton",
+
+    rating: 4.7,
+    reviews: 118
+  },
+
+  {
+    id: 621,
+    name: "Classic Blue Floral Girls Dress",
+    price: 1799,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Classic blue floral printed dress with comfortable fit for daily and party wear.",
+
+    images: ["/kids/girl3.jpeg"],
+
+    colors: ["Blue"],
+    sizes: ["2-3Y", "3-4Y", "4-5Y", "5-6Y"],
+
+    material: "Cotton",
+
+    rating: 4.6,
+    reviews: 104
+  },
+
+  {
+    id: 622,
+    name: "Swan Print Sleeveless Party Dress",
+    price: 1999,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Cute swan print sleeveless dress with flared design, perfect for birthday parties.",
+
+    images: ["/kids/girl4.jpeg"],
+
+    colors: ["Sky Blue"],
+    sizes: ["2-3Y", "3-4Y", "4-5Y"],
+
+    material: "Cotton",
+
+    rating: 4.8,
+    reviews: 146
+  },
+
+  {
+    id: 623,
+    name: "Rabbit Print Sleeveless Girls Dress",
+    price: 1699,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Adorable rabbit print sleeveless dress with soft breathable fabric.",
+
+    images: ["/kids/girl5.jpeg"],
+
+    colors: ["White"],
+    sizes: ["2-3Y", "3-4Y", "4-5Y"],
+
+    material: "Cotton",
+
+    rating: 4.7,
+    reviews: 97
+  },
+
+  {
+    id: 624,
+    name: "Star Print Sleeveless Kids Party Dress",
+    price: 1899,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Stylish star printed sleeveless dress for kids, suitable for party occasions.",
+
+    images: ["/kids/girl6.jpeg"],
+
+    colors: ["White", "Pink"],
+    sizes: ["2-3Y", "3-4Y", "4-5Y"],
+
+    material: "Cotton",
+
+    rating: 4.6,
+    reviews: 88
+  },
+
+  {
+    id: 625,
+    name: "Blue Floral Everyday Girls Dress",
+    price: 1599,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Comfortable blue floral everyday dress designed for all-day wear.",
+
+    images: ["/kids/girl7.jpeg"],
+
+    colors: ["Blue"],
+    sizes: ["2-3Y", "3-4Y", "4-5Y", "5-6Y"],
+
+    material: "Cotton",
+
+    rating: 4.5,
+    reviews: 76
+  },
+
+  {
+    id: 626,
+    name: "Smocked Collar Elegant Girls Dress",
+    price: 2199,
+
+    category: "kids",
+    subCategory: "girls",
+
+    description:
+      "Elegant smocked collar dress with premium stitching for special occasions.",
+
+    images: ["/kids/girl10.jpeg"],
+
+    colors: ["Powder Blue"],
+    sizes: ["3-4Y", "4-5Y", "5-6Y", "6-7Y"],
+
+    material: "Cotton",
+
+    rating: 4.9,
+    reviews: 162
+  },
+
+  // ================= KIDS – WINTER (BOYS) =================
+
+{
+  id: 626,
+  name: "Dinosaur Print Kids Winter Co-Ord Set",
+  price: 2299,
+
+  category: "kids",
+  subCategory: "winter",
+
+  description:
+    "Warm dinosaur print winter co-ord set for kids, made with soft fleece for cold days.",
+
+  images: ["/kids/winter1.jpeg"],
+
+  colors: ["Sage Green"],
+  sizes: ["1-2Y", "2-3Y", "3-4Y", "4-5Y"],
+
+  material: "Cotton",
+
+  rating: 4.7,
+  reviews: 112
+},
+
+{
+  id: 627,
+  name: "Space Explorer Kids Winter Set",
+  price: 2499,
+
+  category: "kids",
+  subCategory: "winter",
+
+  description:
+    "Space explorer themed winter nightwear set with full sleeves and warm lining.",
+
+  images: ["/kids/winter2.jpeg"],
+
+  colors: ["Sky Blue"],
+  sizes: ["1-2Y", "2-3Y", "3-4Y", "4-5Y"],
+
+  material: "Cotton",
+
+  rating: 4.8,
+  reviews: 136
+},
+
+{
+  id: 628,
+  name: "Striped Knit Winter Sweater Set",
+  price: 2699,
+
+  category: "kids",
+  subCategory: "winter",
+
+  description:
+    "Premium knitted striped sweater with matching pants, perfect for winter outings.",
+
+  images: ["/kids/winter3.jpeg"],
+
+  colors: ["Green", "Beige"],
+  sizes: ["6-12M", "1-2Y", "2-3Y", "3-4Y"],
+
+  material: "Wool",
+
+  rating: 4.6,
+  reviews: 94
+},
+
+{
+  id: 629,
+  name: "Elephant Print Fleece Winter Set",
+  price: 2399,
+
+  category: "kids",
+  subCategory: "winter",
+
+  description:
+    "Cute elephant print fleece winter set designed for maximum warmth and comfort.",
+
+  images: ["/kids/winter4.jpeg"],
+
+  colors: ["Grey"],
+  sizes: ["6-12M", "1-2Y", "2-3Y", "3-4Y"],
+
+  material: "Cotton",
+
+  rating: 4.7,
+  reviews: 121
+},
+
+{
+  id: 630,
+  name: "Quilted Zip-Neck Kids Winter Set",
+  price: 2899,
+
+  category: "kids",
+  subCategory: "winter",
+
+  description:
+    "Stylish quilted zip-neck sweatshirt with joggers, ideal for winter wear.",
+
+  images: ["/kids/winter5.jpeg"],
+
+  colors: ["Light Grey", "Navy Blue"],
+  sizes: ["1-2Y", "2-3Y", "3-4Y", "4-5Y"],
+
+  material: "Polyester",
+
+  rating: 4.9,
+  reviews: 158
+},
+
+// ================= GIRLS PARTY WEAR PRODUCTS =================
+
+// party / girls
+{
+  id: 701,
+  name: "Wine Sequin Princess Party Gown",
+  price: 4999,
+
+  category: "kids",
+  subCategory: "party",
+
+  description:
+    "Luxury wine-colored sequin party gown with flowing net cape, perfect for weddings and grand occasions.",
+
+  images: ["/kids/party1.jpeg"],
+
+  colors: ["Wine"],
+  sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
+
+  material: "Net & Sequin",
+
+  rating: 4.9,
+  reviews: 184
+},
+
+{
+  id: 702,
+  name: "Lavender Net Bow Party Dress",
+  price: 3299,
+
+  category: "kids",
+  subCategory: "party",
+
+  description:
+    "Elegant lavender net party dress with soft puff sleeves and front bow detailing.",
+
+  images: ["/kids/party2.jpeg"],
+
+  colors: ["Lavender"],
+  sizes: ["3-4Y", "4-5Y", "5-6Y", "6-7Y"],
+
+  material: "Net",
+
+  rating: 4.7,
+  reviews: 121
+},
+
+{
+  id: 703,
+  name: "Maroon Off-Shoulder Net Party Gown",
+  price: 4599,
+
+  category: "kids",
+  subCategory: "party",
+
+  description:
+    "Stylish maroon off-shoulder party gown with shimmer waistband and layered net flare.",
+
+  images: ["/kids/party3.jpeg"],
+
+  colors: ["Maroon"],
+  sizes: ["5-6Y", "6-7Y", "8-9Y"],
+
+  material: "Net & Satin",
+
+  rating: 4.8,
+  reviews: 139
+},
+
+{
+  id: 704,
+  name: "Unicorn Fantasy Party Dress with Headband",
+  price: 3799,
+
+  category: "kids",
+  subCategory: "party",
+
+  description:
+    "Cute unicorn-themed party dress with multicolor frill layers and matching unicorn headband.",
+
+  images: ["/kids/party4.jpeg"],
+
+  colors: ["Pink", "Multicolor"],
+  sizes: ["3-4Y", "4-5Y", "5-6Y"],
+
+  material: "Net",
+
+  rating: 4.9,
+  reviews: 201
+},
+
+{
+  id: 705,
+  name: "Magenta Ethnic Party Lehenga Set",
+  price: 5299,
+
+  category: "kids",
+  subCategory: "party",
+
+  description:
+    "Traditional magenta ethnic lehenga set with embroidered jacket and pleated skirt for festive occasions.",
+
+  images: ["/kids/party5.jpeg"],
+
+  colors: ["Magenta"],
+  sizes: ["6-7Y", "8-9Y", "10-11Y"],
+
+  material: "Georgette & Silk Blend",
+
+  rating: 4.8,
+  reviews: 167
+}
+
+
 ];

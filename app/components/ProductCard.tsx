@@ -38,25 +38,27 @@ export default function ProductCard({ product }: Props) {
                 hover:border-gray-300
             "
         >
-            {/* ================= IMAGE ================= */}
-            <div className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden">
-                <Image
-                    src={imageSrc}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw,
-                           (max-width: 1024px) 33vw,
-                           25vw"
-                    className="
-                        object-cover
-                        object-center
-                        transition-transform duration-300
-                        group-hover:scale-105
-                    "
-                    loading="lazy"
-                    priority={false}   // ✅ explicit for clarity
-                />
-            </div>
+            {/* ================= IMAGE (✅ NOW CLICKABLE) ================= */}
+            <Link href={`/product/${product.id}`} className="block">
+                <div className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden">
+                    <Image
+                        src={imageSrc}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 640px) 50vw,
+                               (max-width: 1024px) 33vw,
+                               25vw"
+                        className="
+                            object-cover
+                            object-center
+                            transition-transform duration-300
+                            group-hover:scale-105
+                        "
+                        loading="lazy"
+                        priority={false}
+                    />
+                </div>
+            </Link>
 
             {/* ================= CONTENT ================= */}
             <div className="p-4 flex flex-col gap-2 text-gray-900 flex-1">
@@ -78,6 +80,7 @@ export default function ProductCard({ product }: Props) {
                     </p>
                 )}
 
+                {/* ❌ already tha – untouched */}
                 <Link
                     href={`/product/${product.id}`}
                     className="
