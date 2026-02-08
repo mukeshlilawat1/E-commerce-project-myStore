@@ -21,12 +21,7 @@ export default function CartItem({ item }: Props) {
     // case 2: item.images exists
     if (Array.isArray((item as any).images) && (item as any).images.length > 0) {
         imageSrc = (item as any).images[0];
-    }
-
-    // ensure leading slash
-    if (!imageSrc.startsWith("/")) {
-        imageSrc = "/" + imageSrc;
-    }
+    } 
 
     return (
         <div
