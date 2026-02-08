@@ -83,11 +83,13 @@ export default function ProductDetailPage() {
                 {/* ================= IMAGE ================= */}
                 <div className="flex flex-col gap-4">
                     <div className="relative w-full max-h-[600px] aspect-[3/4] rounded-2xl bg-white border border-gray-200 overflow-hidden shadow-sm">
-                        <img
+                        <Image
                             src={images[activeImage]}
                             alt={product.name}
+                            fill
                             sizes="(max-width: 768px) 100vw, 50vw"
-                            className="object-contain"
+                            className="object-cover"
+                            priority
                         />
                     </div>
 
@@ -104,9 +106,10 @@ export default function ProductDetailPage() {
                                         : "border-gray-300"}
                                 `}
                             >
-                                <img
+                                <Image
                                     src={img}
                                     alt="thumb"
+                                    fill
                                     sizes="64px"
                                     className="object-cover"
                                 />
