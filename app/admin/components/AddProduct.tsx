@@ -23,10 +23,67 @@ export function AddProduct({ onAdd, onCancel }: AddProductProps) {
   });
 
   const [sizesInput, setSizesInput] = useState('');
+  const [isUploadingMain, setIsUploadingMain] = useState(false);
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const categories = ['shoes', 'watches', 'men', 'women', 'kids', 'kitchen'];
+
+  const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+  const uploadToCloudinary = async (file: File): Promise<string | null> => {
+    if (!CLOUD_NAME || !UPLOAD_PRESET) {
+      console.error('Cloudinary env vars missing: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME or NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET');
+      setErrors(prev => ({ ...prev, image: 'Image upload is not configured. Please set Cloudinary env vars.' }));
+      return null;
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+      }
+      const data = await res.json();
+      return data.secure_url as string;
+    } catch (err) {
+      console.error('Cloudinary upload failed', err);
+      setErrors(prev => ({ ...prev, image: 'Failed to upload image. Please try again.' }));
+      return null;
+    }
+  };
+
+  const handleMainImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingMain(true);
+    const url = await uploadToCloudinary(file);
+    setIsUploadingMain(false);
+    if (url) {
+      setFormData(prev => ({ ...prev, image: url }));
+      setErrors(prev => ({ ...prev, image: '' }));
+    }
+  };
+
+  const handleExtraImageFile = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingIndex(index);
+    const url = await uploadToCloudinary(file);
+    setUploadingIndex(null);
+    if (url) {
+      const newImages = [...formData.images];
+      newImages[index] = url;
+      setFormData(prev => ({ ...prev, images: newImages }));
+    }
+  };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -35,7 +92,7 @@ export function AddProduct({ onAdd, onCancel }: AddProductProps) {
     if (formData.price <= 0) newErrors.price = 'Price must be greater than 0';
     if (!formData.category) newErrors.category = 'Category is required';
     if (!formData.description.trim()) newErrors.description = 'Description is required';
-    if (!formData.image.trim()) newErrors.image = 'Main image URL is required';
+    if (!formData.image.trim()) newErrors.image = 'Main image is required';
     if (formData.rating < 0 || formData.rating > 5) newErrors.rating = 'Rating must be between 0 and 5';
     if (formData.reviews < 0) newErrors.reviews = 'Reviews count cannot be negative';
     
@@ -141,15 +198,22 @@ export function AddProduct({ onAdd, onCancel }: AddProductProps) {
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Main Image URL *
+              Main Image *
             </label>
-            <input
-              type="url"
-              value={formData.image}
-              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="https://example.com/image.jpg"
-            />
+            <div className="space-y-2">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleMainImageFile}
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {isUploadingMain && (
+                <p className="text-sm text-gray-600">Uploading image...</p>
+              )}
+              {formData.image && (
+                <img src={formData.image} alt="Main preview" className="mt-2 h-24 w-24 object-cover rounded" />
+              )}
+            </div>
             {errors.image && <p className="text-red-600 text-sm mt-1">{errors.image}</p>}
           </div>
 
@@ -234,13 +298,20 @@ export function AddProduct({ onAdd, onCancel }: AddProductProps) {
           <div className="space-y-2">
             {formData.images.map((image, index) => (
               <div key={index} className="flex items-center space-x-2">
-                <input
-                  type="url"
-                  value={image}
-                  onChange={(e) => handleImageChange(index, e.target.value)}
-                  className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="https://example.com/image.jpg"
-                />
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleExtraImageFile(index, e)}
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  {uploadingIndex === index && (
+                    <p className="text-sm text-gray-600 mt-1">Uploading image...</p>
+                  )}
+                  {image && (
+                    <img src={image} alt={`Image ${index + 1}`} className="mt-2 h-20 w-20 object-cover rounded" />
+                  )}
+                </div>
                 {formData.images.length > 1 && (
                   <button
                     type="button"
